@@ -31,4 +31,11 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>assets</name>
+			<type>2</type>
+			<location>C:/Users/adams_000/CODE/Processing/HiddenStory/HiddenStory/data</location>
+		</link>
+	</linkedResources>
 </projectDescription>

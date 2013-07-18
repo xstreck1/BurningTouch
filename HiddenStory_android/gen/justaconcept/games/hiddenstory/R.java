@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package justaconcept.games.hiddenstory;
+package justaconcept.games.HiddenStory;
 
 public final class R {
     public static final class attr {

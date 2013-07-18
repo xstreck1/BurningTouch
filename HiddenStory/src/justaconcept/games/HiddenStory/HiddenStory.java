@@ -1,4 +1,4 @@
-package justaconcept.games.hidden_story;
+package justaconcept.games.HiddenStory;
 import processing.core.*;
 
 public class HiddenStory extends PApplet {

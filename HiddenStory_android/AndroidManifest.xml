@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="justaconcept.games.hiddenstory"
+    package="justaconcept.games.HiddenStory"
     android:versionCode="1"
     android:versionName="1.00" >
 
@@ -13,12 +13,12 @@
         android:icon="@drawable/icon"
         android:label="Hidden Story" >
         <activity
-            android:name="justaconcept.games.hidden_story.HiddenStory"
+            android:name="justaconcept.games.HiddenStory.HiddenStory"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
         <activity
-            android:name="justaconcept.games.hidden_story.StartScreen"
+            android:name="justaconcept.games.HiddenStory.StartScreen"
             android:label="@string/title_activity_start_screen"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"  >

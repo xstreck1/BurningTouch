@@ -1,5 +1,5 @@
+/* @pjs preload="papyrus.jpg, papyrus_covered.jpg"; */
 
-public class hidden_story extends PApplet {
     PImage back;
     PImage front;
     PImage mask;
@@ -12,7 +12,7 @@ public class hidden_story extends PApplet {
   size(GAME_WIDTH, GAME_HEIGHT);
   font = createFont("Arial", 48);
 
-  orientation(LANDSCAPE);
+  // orientation(LANDSCAPE);
   back = loadImage("papyrus.jpg");
   front = loadImage("papyrus_covered.jpg");
   mask = createImage(GAME_WIDTH, GAME_HEIGHT, ARGB);
@@ -72,5 +72,5 @@ public class hidden_story extends PApplet {
   println(frameRate);
   // gray int frameRate display:
     }
-}
+
 
