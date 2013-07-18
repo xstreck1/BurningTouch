@@ -1,0 +1,9 @@
+*.class
+*\.idea*
+*\.settings*
+*\bin*
+*.jar
+*.db
+*.swp
+*.apk
+*\out*
