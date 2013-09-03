@@ -12,27 +12,28 @@ public class HiddenStory extends PApplet {
 
     public void setup() {
 
+	frameRate(30);
 	orientation(LANDSCAPE);
 	size(GAME_WIDTH, GAME_HEIGHT);
 	
 	font = createFont("Arial", 48);
 	back = loadImage("papyrus.png");
-	front = loadImage("papyrus_covered.png");
+	front = loadImage("papyrus_covered_base.png");
 	mask = createImage(GAME_WIDTH, GAME_HEIGHT, ARGB);
 	mask.loadPixels();
 	front.loadPixels();
 	for (int i = 0; i < front.pixels.length; i++) {
 	    int pix_color = front.pixels[i];
-	    int a = (pix_color >> 24) & 0xFF;
+	    int a = 0; // (pix_color >> 24) & 0xFF;
 	    int r = (pix_color >> 16) & 0xFF; // Faster way of getting red(argb)
 	    int g = (pix_color >> 8) & 0xFF; // Faster way of getting
 					     // green(argb)
 	    int b = pix_color & 0xFF;
 	    mask.pixels[i] = color(r, g, b, a);
 	}
+	front.loadPixels();
 	mask.updatePixels();
 	background(back);
-	background(mask);
 	loop();
     }
 
@@ -58,7 +59,7 @@ public class HiddenStory extends PApplet {
 						     // green(argb)
 		    int b = pix_color & 0xFF;
 		    if (a < 0xFF)
-			mask.pixels[position] = color(r, g, b, a + 1);
+			mask.pixels[position] = color(r, g, b, a + 5);
 		    if (delay > 10)
 			mask.pixels[position] = color(r - 2, g - 2, b - 5, a + 1);
 		}
