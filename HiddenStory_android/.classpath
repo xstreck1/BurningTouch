@@ -4,8 +4,10 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="src" path="assets"/>
+	<classpathentry kind="src" path="src2"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/HiddenStory"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/HiddenStory"/>
+	<classpathentry kind="lib" path="/HiddenStory/src/justaconcept/games/HiddenStory"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

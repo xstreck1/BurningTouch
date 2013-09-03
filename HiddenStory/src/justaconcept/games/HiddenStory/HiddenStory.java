@@ -16,8 +16,8 @@ public class HiddenStory extends PApplet {
 	size(GAME_WIDTH, GAME_HEIGHT);
 	
 	font = createFont("Arial", 48);
-	back = loadImage("papyrus.jpg");
-	front = loadImage("papyrus_covered.jpg");
+	back = loadImage("papyrus.png");
+	front = loadImage("papyrus_covered.png");
 	mask = createImage(GAME_WIDTH, GAME_HEIGHT, ARGB);
 	mask.loadPixels();
 	front.loadPixels();
@@ -28,10 +28,11 @@ public class HiddenStory extends PApplet {
 	    int g = (pix_color >> 8) & 0xFF; // Faster way of getting
 					     // green(argb)
 	    int b = pix_color & 0xFF;
-	    mask.pixels[i] = color(r, g, b, 2);
+	    mask.pixels[i] = color(r, g, b, a);
 	}
 	mask.updatePixels();
 	background(back);
+	background(mask);
 	loop();
     }
 
@@ -76,8 +77,19 @@ public class HiddenStory extends PApplet {
 	// gray int frameRate display:
     }
     
+    @Override
     public void stop() {
-	mask.save("new.png");
+	super.destroy();
+	 System.out.println("On stop");
+	// mask.save("papyrus_covered.png");
+    }
+   
+    
+    @Override
+    public void destroy() {
+	super.stop();
+	 System.out.println("On destroy");
+	// mask.save("papyrus_covered.png");
     }
 
     public int sketchWidth() {

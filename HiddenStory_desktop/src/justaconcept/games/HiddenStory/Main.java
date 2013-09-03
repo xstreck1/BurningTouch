@@ -2,8 +2,6 @@ package justaconcept.games.HiddenStory;
 
 import javax.swing.JFrame;
 
-import justaconcept.games.HiddenStory.HiddenStory;
-
 public class Main {
     public static void main(String[] args) {
 	JFrame frame = new JFrame();
