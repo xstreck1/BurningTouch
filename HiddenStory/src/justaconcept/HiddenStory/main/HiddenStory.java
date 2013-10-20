@@ -1,4 +1,4 @@
-package main.justaconcept.HiddenStory;
+package justaconcept.HiddenStory.main;
 import processing.core.*;
 
 public class HiddenStory extends PApplet {
@@ -100,10 +100,10 @@ public class HiddenStory extends PApplet {
     }
 
     public int sketchWidth() {
-        return GAME_WIDTH;
+        return displayWidth;
     }
 
     public int sketchHeight() {
-        return GAME_HEIGHT;
+        return displayHeight;
     }
 }

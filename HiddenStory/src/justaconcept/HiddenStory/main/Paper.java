@@ -1,4 +1,4 @@
-package main.justaconcept.HiddenStory;
+package justaconcept.HiddenStory.main;
 
 import processing.core.PApplet;
 import processing.core.PImage;

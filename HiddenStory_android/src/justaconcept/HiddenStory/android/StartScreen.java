@@ -1,7 +1,6 @@
-package justaconcept.android.HiddenStory;
+package justaconcept.HiddenStory.android;
 
-import justaconcept.games.HiddenStory.R;
-import main.justaconcept.HiddenStory.HiddenStory;
+import justaconcept.HiddenStory.main.HiddenStory;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
