@@ -1,6 +1,8 @@
-package justaconcept.games.HiddenStory;
+package justaconcept.desktop.HiddenStory;
 
 import javax.swing.JFrame;
+
+import main.justaconcept.HiddenStory.HiddenStory;
 
 public class Main {
     public static void main(String[] args) {

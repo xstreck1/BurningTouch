@@ -1,5 +1,7 @@
-package justaconcept.games.HiddenStory;
+package justaconcept.android.HiddenStory;
 
+import justaconcept.games.HiddenStory.R;
+import main.justaconcept.HiddenStory.HiddenStory;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,7 +10,6 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-import justaconcept.games.HiddenStory.HiddenStory;
 
 public class StartScreen extends Activity {
     SharedPreferences prefs;

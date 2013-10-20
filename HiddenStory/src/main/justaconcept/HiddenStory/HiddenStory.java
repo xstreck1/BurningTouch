@@ -1,7 +1,9 @@
-package justaconcept.games.HiddenStory;
+package main.justaconcept.HiddenStory;
 import processing.core.*;
 
 public class HiddenStory extends PApplet {
+    private TimeManager time_manager;
+    
     private PImage back;
     private PImage front;
     private PImage mask;
@@ -9,12 +11,17 @@ public class HiddenStory extends PApplet {
 
     private final int GAME_WIDTH = 480;
     private final int GAME_HEIGHT = 320;
+    
+    private final int SCENE_COUNT = 1;
+    private int current_scene = 1;
+    private int reached_scene = 1;
+    private Paper current_paper;
 
     public void setup() {
-
 	frameRate(30);
 	orientation(LANDSCAPE);
 	size(GAME_WIDTH, GAME_HEIGHT);
+	time_manager = new TimeManager(this, 30);
 	
 	font = createFont("Arial", 48);
 	back = loadImage("papyrus.png");
@@ -31,9 +38,9 @@ public class HiddenStory extends PApplet {
 	    int b = pix_color & 0xFF;
 	    mask.pixels[i] = color(r, g, b, a);
 	}
-	front.loadPixels();
 	mask.updatePixels();
 	background(back);
+	image(mask.get(0,0,480,320),0,0);
 	loop();
     }
 
@@ -84,7 +91,6 @@ public class HiddenStory extends PApplet {
 	 System.out.println("On stop");
 	// mask.save("papyrus_covered.png");
     }
-   
     
     @Override
     public void destroy() {
