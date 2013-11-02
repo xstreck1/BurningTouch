@@ -3,6 +3,7 @@ import java.util.HashMap;
 
 import justaconcept.HiddenStory.test.Platform;
 import processing.core.PApplet;
+import processing.core.PImage;
 
 public class HiddenStory extends PApplet {
     private TimeManager time_manager;
@@ -20,7 +21,18 @@ public class HiddenStory extends PApplet {
 //    private Paper current_paper;
     
     public void loadWorkingMask() {
-	GameState.working_mask = loadImage(Sources.getMaskName(GameState.latest_paper, this));
+	PImage mask = loadImage(Sources.getMaskName(GameState.latest_paper, this));
+	mask.loadPixels();
+	for (int i = 0; i < mask.pixels.length; i++) {
+	    int pix_color = mask.pixels[i];
+	    int a = 0; // (pix_color >> 24) & 0xFF;
+	    int r = (pix_color >> 16) & 0xFF; // Faster way of getting red(argb)
+	    int g = (pix_color >> 8) & 0xFF; // Faster way of getting// green(argb)
+	    int b = pix_color & 0xFF;
+	    mask.pixels[i] = color(r, g, b, a);
+	}
+	mask.updatePixels();
+	GameState.working_mask = mask;
     }
 
     public void setup() {
@@ -42,27 +54,6 @@ public class HiddenStory extends PApplet {
 	
 	drawing_manager = new DrawingManager(this, scene_objects);
     }	
-	
-//	font = createFont("Arial", 48);
-//	back = loadImage("papyrus.png");
-//	front = loadImage("papyrus_covered_base.png");
-//	mask = createImage(GAME_WIDTH, GAME_HEIGHT, ARGB);
-//	mask.loadPixels();
-//	front.loadPixels();
-//	for (int i = 0; i < front.pixels.length; i++) {
-//	    int pix_color = front.pixels[i];
-//	    int a = 0; // (pix_color >> 24) & 0xFF;
-//	    int r = (pix_color >> 16) & 0xFF; // Faster way of getting red(argb)
-//	    int g = (pix_color >> 8) & 0xFF; // Faster way of getting
-//					     // green(argb)
-//	    int b = pix_color & 0xFF;
-//	    mask.pixels[i] = color(r, g, b, a);
-//	}
-//	mask.updatePixels();
-//	background(back);
-//	image(mask.get(0,0,480,320),0,0);
-//	loop();
-   
 
 //    int delay = 0;
 //
@@ -71,7 +62,9 @@ public class HiddenStory extends PApplet {
 //    final int SQR_RAD = (RADIUS) * (RADIUS);
 
     public void draw() {
-	drawing_manager.draw();
+	time_manager.update();
+	drawing_manager.update(time_manager.getDelta_());
+	
     }
 	// Draw the stuff if necessary.
 	

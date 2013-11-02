@@ -21,7 +21,7 @@ public class DrawingManager extends ObjectManager {
 	bg_col = p_.color(0, 0, 0);
     }
     
-    void draw() {
+    @Override void update(int delta_time)  {
 	switch (draw_what) {
 	case all:
 	    p_.fill(bg_col);
