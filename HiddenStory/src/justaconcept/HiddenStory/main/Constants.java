@@ -13,4 +13,9 @@ public class Constants {
     static final String BTN_OBJ_STR = "buttons_object";
     
     static final int SCENE_COUNT = 10;
+    
+    private static final int BUTTON_DIM = 50;
+    static final Rectangle BACKWARD_BTN_POS = new Rectangle(0, 0, BUTTON_DIM, BUTTON_DIM);
+    static final Rectangle FORWARD_BTN_POS = new Rectangle(480 - BUTTON_DIM, 320 - BUTTON_DIM, BUTTON_DIM, BUTTON_DIM);
+    static final Rectangle RESET_BTN_POS = new Rectangle(480 - BUTTON_DIM, 0, BUTTON_DIM, BUTTON_DIM);
 }

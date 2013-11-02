@@ -12,6 +12,6 @@ public class UpdateManager extends ObjectManager {
     }
     
     @Override void update(int delta_time)  {
-
+		
     }
 }

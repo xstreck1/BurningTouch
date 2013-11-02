@@ -8,6 +8,8 @@ import processing.core.PImage;
 public class HiddenStory extends PApplet {
     private TimeManager time_manager;
     private DrawingManager drawing_manager;
+    private UpdateManager update_manager;
+    private TouchManager touch_manager;
     private HashMap<String, SceneObject> scene_objects;
     
 //    private PImage back;
@@ -53,6 +55,8 @@ public class HiddenStory extends PApplet {
 	scene_objects.put(Constants.BTN_OBJ_STR, new Buttons(this));
 	
 	drawing_manager = new DrawingManager(this, scene_objects);
+	update_manager = new UpdateManager(this, scene_objects);
+	touch_manager = new TouchManager(this, scene_objects);
     }	
 
 //    int delay = 0;
@@ -64,7 +68,8 @@ public class HiddenStory extends PApplet {
     public void draw() {
 	time_manager.update();
 	drawing_manager.update(time_manager.getDelta_());
-	
+	update_manager.update(time_manager.getDelta_());
+	touch_manager.update(time_manager.getDelta_());
     }
 	// Draw the stuff if necessary.
 	

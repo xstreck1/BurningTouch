@@ -3,6 +3,11 @@ package justaconcept.HiddenStory.main;
 import processing.core.PImage;
 
 public class GameState {
+    public enum Control {
+	forward, backward, reset, none;
+    }
+    
+    static public Control control = Control.none;
     static public PImage working_mask; // The text currently being elucidated 
     static public int current_paper = 1; // Numerical id of the currently used paper 
     static public int latest_paper = 1; // Numerical id of the paper the player is currently solving
