@@ -9,6 +9,8 @@ public class Constants {
     
     static final int PIECE_SIZE = 80; // Size of a single square of background in pixels.
     static final String BG_OBJ_STR = "background_object";
-    static final String TXT_OBJ_STR = "text_object";
+    static final String PPR_OBJ_STR = "paper_object";
     static final String BTN_OBJ_STR = "buttons_object";
+    
+    static final int SCENE_COUNT = 10;
 }

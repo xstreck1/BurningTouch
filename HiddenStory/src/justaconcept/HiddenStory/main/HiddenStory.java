@@ -18,15 +18,27 @@ public class HiddenStory extends PApplet {
 //    private int current_scene = 1;
 //    private int reached_scene = 1;
 //    private Paper current_paper;
+    
+    public void loadWorkingMask() {
+	GameState.working_mask = loadImage(Sources.getMaskName(GameState.latest_paper, this));
+    }
 
     public void setup() {
+	LayoutManager.testResolution();
+	
 	frameRate(Constants.FRAMERATE);
 	orientation(LANDSCAPE);
 	size(Platform.getScreenWidth(), Platform.getScreenHeight());
+	
+	Platform.loadGameState(this);
+	loadWorkingMask();
+	
 	time_manager = new TimeManager(this, Constants.FRAMERATE);
 		
 	scene_objects = new HashMap<String, SceneObject>();
 	scene_objects.put(Constants.BG_OBJ_STR, new BackgroundGraphic(this));
+	scene_objects.put(Constants.PPR_OBJ_STR, new DynamicPaper(this, GameState.working_mask));
+	scene_objects.put(Constants.BTN_OBJ_STR, new Buttons(this));
 	
 	drawing_manager = new DrawingManager(this, scene_objects);
     }	
