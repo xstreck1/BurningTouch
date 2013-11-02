@@ -24,7 +24,7 @@ public class Platform {
     
     static public void loadGameState() {
 	GameState.current_paper = 1;
-	GameState.latest_paper = 3;
+	GameState.latest_paper = 2;
 	GameState.burned = false;
     }
     
