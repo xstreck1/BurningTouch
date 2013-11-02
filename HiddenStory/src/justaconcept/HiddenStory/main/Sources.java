@@ -18,5 +18,6 @@ public class Sources {
 	return Sources.MASK_NAME + "_" + p.parseInt(paper_no) + Sources.MASK_SUFFIX;
     }
     
-    
+    final static String FORWARD_BUTTON = "forward_button.png";
+    final static String BACKWARD_BUTTON = "backward_button.png";
 }

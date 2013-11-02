@@ -22,11 +22,10 @@ public class Platform {
 	System.exit(0);
     }
     
-    static public void loadGameState(final PApplet p_) {
+    static public void loadGameState() {
 	GameState.current_paper = 1;
-	GameState.latest_paper = 1;
+	GameState.latest_paper = 3;
 	GameState.burned = false;
-// 	GameState.working_mask = p_.loadImage(Sources.MASK_NAME + p_.toString(current_paper) + Sources.PICTURE_SUFFIX);
     }
     
     static public void saveGameState() {

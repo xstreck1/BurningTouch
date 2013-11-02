@@ -44,14 +44,19 @@ public class HiddenStory extends PApplet {
 	orientation(LANDSCAPE);
 	size(Platform.getScreenWidth(), Platform.getScreenHeight());
 	
-	Platform.loadGameState(this);
+	Platform.loadGameState();
 	loadWorkingMask();
 	
 	time_manager = new TimeManager(this, Constants.FRAMERATE);
 		
 	scene_objects = new HashMap<String, SceneObject>();
 	scene_objects.put(Constants.BG_OBJ_STR, new BackgroundGraphic(this));
-	scene_objects.put(Constants.PPR_OBJ_STR, new DynamicPaper(this, GameState.working_mask));
+	BasicPaper current_paper;
+	if (GameState.current_paper == GameState.latest_paper) 
+	    current_paper = new DynamicPaper(this, GameState.working_mask);
+	else 
+    	    current_paper = new StaticPaper(this, GameState.current_paper);
+	scene_objects.put(Constants.PPR_OBJ_STR, current_paper);
 	scene_objects.put(Constants.BTN_OBJ_STR, new Buttons(this));
 	
 	drawing_manager = new DrawingManager(this, scene_objects);
@@ -67,9 +72,9 @@ public class HiddenStory extends PApplet {
 
     public void draw() {
 	time_manager.update();
-	drawing_manager.update(time_manager.getDelta_());
 	update_manager.update(time_manager.getDelta_());
 	touch_manager.update(time_manager.getDelta_());
+	drawing_manager.update(time_manager.getDelta_());
     }
 	// Draw the stuff if necessary.
 	

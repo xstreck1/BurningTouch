@@ -19,6 +19,6 @@ public class Rectangle {
     }
     
     public boolean holdsPoint(int x, int y) {
-	return (x >= x_ && y >= y_ && x <= (x_ - width_) && y <- (y_ - height_));
+	return (x >= x_ && y >= y_ && x <= (x_ + width_) && y <= (y_ + height_));
     }
 }

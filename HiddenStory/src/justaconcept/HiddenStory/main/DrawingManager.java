@@ -22,6 +22,8 @@ public class DrawingManager extends ObjectManager {
     }
     
     @Override void update(int delta_time)  {
+	draw_what = DrawWhat.all;
+	
 	switch (draw_what) {
 	case all:
 	    p_.fill(bg_col);
@@ -29,6 +31,7 @@ public class DrawingManager extends ObjectManager {
 	    scene_objects_.get(Constants.BG_OBJ_STR).draw();
 	    LayoutManager.translateToBoard(p_);
 	    scene_objects_.get(Constants.PPR_OBJ_STR).draw();
+	    scene_objects_.get(Constants.BTN_OBJ_STR).draw();
 	    p_.resetMatrix();
 	case nothing:
 	    break;
