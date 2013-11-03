@@ -1,5 +1,6 @@
-package justaconcept.HiddenStory.android;
+package justaconcept.HiddenStory.platform;
 
+import justaconcept.HiddenStory.android.R;
 import justaconcept.HiddenStory.main.HiddenStory;
 import android.app.Activity;
 import android.content.Intent;
@@ -21,6 +22,10 @@ public class StartScreen extends Activity {
 	setContentView(R.layout.start_screen);
 	
 	edit = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+	
+	Platform.context = this;
+	Platform.SCREEN_HEIGHT = getWindowManager().getDefaultDisplay().getHeight();
+	Platform.SCREEN_WIDTH = getWindowManager().getDefaultDisplay().getWidth();
     }
     
     

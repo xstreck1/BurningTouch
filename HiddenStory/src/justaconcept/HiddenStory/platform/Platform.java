@@ -1,4 +1,4 @@
-package justaconcept.HiddenStory.test;
+package justaconcept.HiddenStory.platform;
 
 import javax.swing.JOptionPane;
 

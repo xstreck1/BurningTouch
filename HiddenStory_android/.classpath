@@ -4,8 +4,8 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="justaconcept/HiddenStory/test/|justaconcept/HiddenStory/platform/" kind="src" path="src2"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry excluding="justaconcept/HiddenStory/test/" kind="src" path="src2"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/HiddenStory"/>
 	<classpathentry kind="lib" path="libs/processing-core.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>

@@ -1,6 +1,5 @@
 package justaconcept.HiddenStory.main;
 
-import justaconcept.HiddenStory.test.Platform;
 import processing.core.PApplet;
 import processing.core.PImage;
 

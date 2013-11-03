@@ -2,7 +2,6 @@ package justaconcept.HiddenStory.main;
 
 import java.util.HashMap;
 
-import justaconcept.HiddenStory.test.Platform;
 import processing.core.PApplet;
 
 public class UpdateManager extends ObjectManager {

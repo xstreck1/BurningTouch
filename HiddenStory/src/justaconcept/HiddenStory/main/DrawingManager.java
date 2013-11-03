@@ -2,7 +2,7 @@ package justaconcept.HiddenStory.main;
 
 import java.util.HashMap;
 
-import justaconcept.HiddenStory.test.Platform;
+import justaconcept.HiddenStory.platform.Platform;
 import processing.core.PApplet;
 
 public class DrawingManager extends ObjectManager {

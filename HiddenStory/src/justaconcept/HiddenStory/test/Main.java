@@ -1,10 +1,9 @@
 package justaconcept.HiddenStory.test;
 
 import javax.swing.JFrame;
-import javax.swing.text.html.HTMLDocument.HTMLReader.HiddenAction;
 
-import justaconcept.HiddenStory.main.Constants;
 import justaconcept.HiddenStory.main.HiddenStory;
+import justaconcept.HiddenStory.platform.Platform;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,6 +14,6 @@ public class Main {
 	frame.getContentPane().add(applet);
 	frame.setVisible(true);
 	applet.init();
-	frame.setSize(Platform.SCREEN_WIDTH, Platform.SCREEN_HEIGHT);
+	frame.setSize(Platform.getScreenWidth(), Platform.getScreenHeight());
     }
 }

@@ -18,7 +18,7 @@
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
         <activity
-            android:name="justaconcept.HiddenStory.android.StartScreen"
+            android:name="justaconcept.HiddenStory.platform.StartScreen"
             android:label="@string/title_activity_start_screen"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"  >
