@@ -7,6 +7,5 @@
 	<classpathentry excluding="justaconcept/HiddenStory/test/|justaconcept/HiddenStory/platform/" kind="src" path="src2"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/HiddenStory"/>
-	<classpathentry kind="lib" path="libs/processing-core.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

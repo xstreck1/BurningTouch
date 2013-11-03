@@ -13,10 +13,12 @@ public class HiddenStory extends PApplet {
     private HashMap<String, SceneObject> scene_objects;
     
     public void loadWorkingMask() {
-	PImage mask = loadImage(Sources.getMaskName(GameState.latest_paper, this));
+	PImage source = loadImage(Sources.getMaskName(GameState.latest_paper, this));
+	source.loadPixels();
+	PImage mask = createImage(Constants.GAME_WIDTH, Constants.GAME_HEIGHT, ARGB);
 	mask.loadPixels();
 	for (int i = 0; i < mask.pixels.length; i++) {
-	    mask.pixels[i] = PerPixelFunc.makeInvis(this, mask.pixels[i]);
+	    mask.pixels[i] = PerPixelFunc.makeInvis(this, source.pixels[i]);
 	}
 	mask.updatePixels();
 	GameState.working_mask = mask;
@@ -51,9 +53,10 @@ public class HiddenStory extends PApplet {
 
     public void draw() {
 	time_manager.update();
-	update_manager.update(time_manager.getDelta_());
 	touch_manager.update(time_manager.getDelta_());
+	update_manager.update(time_manager.getDelta_());
 	drawing_manager.update(time_manager.getDelta_());
+	// System.out.println("DeltaTime " + parseInt(time_manager.getDelta_()));
     }
     
     @Override

@@ -18,16 +18,6 @@ public class BasicPaper extends SceneObject {
 	// TODO Auto-generated method stub
     }
 
-    @Override
-    public void update() {
-	// TODO Auto-generated method stub
-	
-    }
-
-    @Override
-    public void touch(int mouse_x, int mouse_y) {
-	// TODO Auto-generated method stub
-	
-    }
+    void redraw(int mouse_x, int mouse_y) {}
 
 }
