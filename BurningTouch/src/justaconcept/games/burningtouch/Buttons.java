@@ -33,7 +33,7 @@ public class Buttons implements SceneObject {
     
     @Override
     public void touch(final int mouse_x, final int mouse_y) {
-	GameState.control = getControlButton(mouse_x, mouse_y);
+	GameState.control = getControlButton(mouse_x, Constants.GAME_HEIGHT - mouse_y);
     }
     
     @Override

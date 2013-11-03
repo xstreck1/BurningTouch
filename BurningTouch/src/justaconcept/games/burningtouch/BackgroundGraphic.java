@@ -5,7 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
- * This class is responsible for drawing a background object that fills the space behind the board.
+ * This class is responsible for drawing a background object that fills the
+ * space behind the board.
  */
 public class BackgroundGraphic implements SceneObject {
     // The images that constitute the board.
@@ -28,45 +29,63 @@ public class BackgroundGraphic implements SceneObject {
 	// Compute positions of where the pieces are to be displayed
 	l_corner_X = (Gdx.graphics.getWidth() % Constants.PIECE_SIZE) / 2;
 	rep_X = Gdx.graphics.getWidth() / Constants.PIECE_SIZE;
-	l_corner_Y = (Gdx.graphics.getHeight()  % Constants.PIECE_SIZE) / 2;
-	rep_Y = Gdx.graphics.getWidth() / Constants.PIECE_SIZE;
+	l_corner_Y = (Gdx.graphics.getHeight() % Constants.PIECE_SIZE) / 2;
+	rep_Y = Gdx.graphics.getHeight() / Constants.PIECE_SIZE;
     }
 
     /**
-     * Start with the corner, then move along the line and turn in the next
-     * corner
+     * Display a piece rotated around it's origin.
      */
-    void makeLine(final int reps) {
-	/*p_.image(corner_piece_, 0f, 0f);
-	for (int i = 0; i < reps; i++) {
-	    p_.translate(Constants.PIECE_SIZE, 0f);
-	    if (i < reps - 2) // Two pieces are not drawn - they are the corners
-		p_.image(border_piece_, 0f, 0f);
+    void displayRotated(SpriteBatch batch, Texture piece, float x, float y, float rotation) {
+	batch.draw(piece, x, y, Constants.PIECE_SIZE / 2f, Constants.PIECE_SIZE / 2f, (float) Constants.PIECE_SIZE, (float) Constants.PIECE_SIZE, 1f, 1f, rotation, 0, 0,
+		Constants.PIECE_SIZE, Constants.PIECE_SIZE, false, false);
+    }
+
+    /**
+     * Position and rotate the corners
+     */
+    void makeCorners(SpriteBatch batch) {
+	displayRotated(batch, corner_piece_, -l_corner_X, l_corner_Y, 90f);
+	displayRotated(batch, corner_piece_, -l_corner_X, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y, 0f);
+	displayRotated(batch, corner_piece_, Gdx.graphics.getWidth() - Constants.PIECE_SIZE + l_corner_X, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y, 270f);
+	displayRotated(batch, corner_piece_, Gdx.graphics.getWidth() - Constants.PIECE_SIZE + l_corner_X, l_corner_Y, 180f);
+    }
+
+    /**
+     * Position and rotate bordering pieces
+     */
+    void makeBorders(SpriteBatch batch) {
+	for (int X = 1; X < (rep_X - 1); X++) {
+	    displayRotated(batch, border_piece_, -l_corner_X + X * Constants.PIECE_SIZE, l_corner_Y, 180f);
+	    displayRotated(batch, border_piece_, -l_corner_X + X * Constants.PIECE_SIZE, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y, 0f);
 	}
-	p_.rotate(p_.PI / 2);*/
+	for (int Y = 1; Y < (rep_Y - 1); Y++) {
+	    displayRotated(batch, border_piece_, -l_corner_X, l_corner_Y  + Y * Constants.PIECE_SIZE, 90f);
+	    displayRotated(batch, border_piece_, l_corner_X + Gdx.graphics.getWidth() - Constants.PIECE_SIZE, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y  - Y * Constants.PIECE_SIZE, 270f);
+
+	}
     }
 
     @Override
     public void draw(SpriteBatch batch) {
-	/*// Draw the borders
-	for (int i = 0; i < 4; i++)
-	    makeLine(i % 2 == 1 ? rep_Y : rep_X);
+	makeCorners(batch);
+	makeBorders(batch);
 
 	// Draw the inner pieces
 	for (int X = 1; X < (rep_X - 1); X++)
 	    for (int Y = 1; Y < (rep_Y - 1); Y++)
-		p_.image(inner_piece_, X * Constants.PIECE_SIZE, Y * Constants.PIECE_SIZE);*/
+		batch.draw(inner_piece_, X * Constants.PIECE_SIZE + l_corner_X, Y * Constants.PIECE_SIZE + l_corner_Y);
     }
 
     @Override
     public void update() {
 	// TODO Auto-generated method stub
-	
+
     }
 
     @Override
     public void touch(int mouse_x, int mouse_y) {
 	// TODO Auto-generated method stub
-	
+
     }
 }

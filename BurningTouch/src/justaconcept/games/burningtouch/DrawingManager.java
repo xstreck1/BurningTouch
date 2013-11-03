@@ -27,18 +27,23 @@ public class DrawingManager extends ObjectManager {
 	Gdx.gl.glClearColor(0, 0, 0, 1);
 	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
+	
+        
+	batch.begin();
+	scene_objects_.get(Constants.BG_OBJ_STR).draw(batch);
+	batch.end();
+	
+	batch.begin();
 	cam.translate(-LayoutManager.getGame_X(), -LayoutManager.getGame_Y(), 0);
 	cam.update();
 	batch.setProjectionMatrix(cam.combined);
-        
-	batch.begin();
 	
-	scene_objects_.get(Constants.BG_OBJ_STR).draw(batch);
 	scene_objects_.get(Constants.PPR_OBJ_STR).draw(batch);
 	scene_objects_.get(Constants.BTN_OBJ_STR).draw(batch);
 	batch.end();
 	
 	cam.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
 	cam.update();
+	batch.setProjectionMatrix(cam.combined);
     }
 }
