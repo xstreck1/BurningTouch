@@ -17,8 +17,8 @@ public class Buttons implements SceneObject {
     
     Buttons() {
 	super();
-	BACKWARD_BTN_POS = new Rectangle(0,  0, BUTTON_DIM, BUTTON_DIM);
-	FORWARD_BTN_POS = new Rectangle(480 - BUTTON_DIM, 320 - BUTTON_DIM, BUTTON_DIM, BUTTON_DIM);
+	BACKWARD_BTN_POS = new Rectangle(0,  320 - BUTTON_DIM, BUTTON_DIM, BUTTON_DIM);
+	FORWARD_BTN_POS = new Rectangle(480 - BUTTON_DIM, 0, BUTTON_DIM, BUTTON_DIM);
 	backward_button = new Texture(Gdx.files.internal(Sources.BACKWARD_BUTTON));
 	forward_button = new Texture(Gdx.files.internal(Sources.FORWARD_BUTTON));
     }

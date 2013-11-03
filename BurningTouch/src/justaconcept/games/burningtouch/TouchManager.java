@@ -14,7 +14,7 @@ public class TouchManager extends ObjectManager {
 	
 	if (Gdx.input.isTouched()) {
 	    GameState.mouse_x = Gdx.input.getX() - LayoutManager.getGame_X();
-	    GameState.mouse_y = Gdx.input.getY() - LayoutManager.getGame_Y();
+	    GameState.mouse_y = Constants.GAME_HEIGHT - (Gdx.input.getY() - LayoutManager.getGame_Y());
 	    
 	    // Call a button if there is a click (not hold)
 	    if (!GameState.mouse_pressed) {
