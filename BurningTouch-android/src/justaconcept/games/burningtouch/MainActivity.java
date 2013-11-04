@@ -14,47 +14,21 @@ public class MainActivity extends AndroidApplication {
     SharedPreferences prefs;
     SharedPreferences.Editor edit;
 
+    static public void loadGameState() {
+	GameState.current_paper = 1;
+	GameState.latest_paper = 2;
+	GameState.burned = false;
+    }
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	
-	setContentView(R.layout.start_screen);
-	
-	edit = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
-    }
-    
-    
-    @Override
-    protected void onResume() {
-	super.onResume();
-	((TextView) findViewById(R.id.button1)).setTextColor(getResources().getColor(R.color.button_font));
-	onToggleClicked(findViewById(R.id.togglebutton));
-    }
-    
-    public void startNewGame(View view) {
-	((TextView) view).setTextColor(getResources().getColor(R.color.button_active));
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
-        cfg.useGL20 = false;
+        cfg.useGL20 = true;
+        
+        loadGameState();
         
         initialize(new BurningTouch(), cfg);
-    }
-    
-    public void continueGame(View view) {
-	((TextView) view).setTextColor(getResources().getColor(R.color.button_active));
-        AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
-        cfg.useGL20 = false;
-        
-        initialize(new BurningTouch(), cfg);
-    }
-    
-    public void onToggleClicked(View view) {
-	boolean sound = ((ToggleButton) view).isChecked();
-	edit.putBoolean("sound", sound);
-	edit.apply();
-    }
-    
-    public void finishGame(View view) {
-	((TextView) view).setTextColor(getResources().getColor(R.color.button_active));
-	finish();
     }
 }

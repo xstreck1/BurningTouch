@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Pixmap;
 
 public class BurningTouch implements ApplicationListener {
@@ -12,6 +13,7 @@ public class BurningTouch implements ApplicationListener {
     private UpdateManager update_manager;
     private TouchManager touch_manager;
     private HashMap<String, SceneObject> scene_objects;
+    private FPSLogger logger;
 
     public void loadWorkingMask() {
 	GameState.working_mask = new Pixmap(Gdx.files.internal(Sources.getMaskName(GameState.latest_paper)));
@@ -43,6 +45,8 @@ public class BurningTouch implements ApplicationListener {
 	drawing_manager = new DrawingManager( scene_objects);
 	update_manager = new UpdateManager( scene_objects);
 	touch_manager = new TouchManager( scene_objects);
+	
+	logger = new FPSLogger();
     }
 
     @Override
@@ -56,6 +60,7 @@ public class BurningTouch implements ApplicationListener {
 	touch_manager.update();
 	update_manager.update();
 	drawing_manager.update();
+	logger.log();
     }
 
     @Override
