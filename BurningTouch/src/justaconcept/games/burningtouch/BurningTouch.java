@@ -1,10 +1,10 @@
 package justaconcept.games.burningtouch;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Pixmap;
 
@@ -30,7 +30,8 @@ public class BurningTouch implements ApplicationListener {
     public void create() {
 	LayoutManager.testResolution();
 
-	loadWorkingMask();
+	if (GameState.working_mask == null)
+	    loadWorkingMask();
 
 	scene_objects = new HashMap<String, SceneObject>();
 	scene_objects.put(Constants.BG_OBJ_STR, new BackgroundGraphic());
@@ -77,7 +78,13 @@ public class BurningTouch implements ApplicationListener {
 
     @Override
     public void dispose() {
-	// TODO Auto-generated method stub
-
+	/* byte[] bytes = new byte[0];
+	try {
+	    bytes = PNG.toPNG(GameState.working_mask);
+	} catch (IOException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+	Gdx.files.internal(Sources.getMaskName(GameState.latest_paper)).writeBytes(bytes, false); */
     }
 }
