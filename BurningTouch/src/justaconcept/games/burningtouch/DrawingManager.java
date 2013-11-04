@@ -17,6 +17,10 @@ public class DrawingManager extends ObjectManager {
 	super(scene_objects_);
 	batch = new SpriteBatch();
 	cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+	resetCamera();
+    }
+    
+    public void resetCamera() {
 	cam.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
 	cam.update();
 	batch.setProjectionMatrix(cam.combined);
@@ -26,8 +30,6 @@ public class DrawingManager extends ObjectManager {
     void update() {
 	Gdx.gl.glClearColor(0, 0, 0, 1);
 	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
-	
         
 	batch.begin();
 	scene_objects_.get(Constants.BG_OBJ_STR).draw(batch);
@@ -42,8 +44,6 @@ public class DrawingManager extends ObjectManager {
 	scene_objects_.get(Constants.BTN_OBJ_STR).draw(batch);
 	batch.end();
 	
-	cam.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
-	cam.update();
-	batch.setProjectionMatrix(cam.combined);
+	resetCamera();
     }
 }

@@ -7,7 +7,7 @@ public class GameState {
     static public int latest_paper = 1; // Numerical id of the paper the player is currently solving
     static public boolean burned = false; // True after the player burns a paper
     
-    static public Pixmap working_mask; // The text currently being elucidated 
+    static public Pixmap working_mask = null; // The text currently being elucidated 
     
     public enum Control {
 	forward, backward, reset, none;
@@ -16,9 +16,4 @@ public class GameState {
     static int mouse_x = -1;
     static int mouse_y = -1;
     static boolean mouse_pressed = false;
-    
-    public enum DrawWhat {
-	all, scene, touch, nothing
-    };
-    public static DrawWhat draw_what = DrawWhat.all;
 }

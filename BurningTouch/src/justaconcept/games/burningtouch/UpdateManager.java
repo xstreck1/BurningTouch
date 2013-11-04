@@ -22,7 +22,7 @@ public class UpdateManager extends ObjectManager {
 	    } 
 	    if (GameState.current_paper < GameState.latest_paper) {
 		scene_objects_.put(Constants.PPR_OBJ_STR, new StaticPaper(GameState.current_paper));
-	    } else {
+	    } else if (GameState.current_paper == GameState.latest_paper){
 		scene_objects_.put(Constants.PPR_OBJ_STR, new DynamicPaper(GameState.working_mask));
 	    }
 	} else if (GameState.control == GameState.Control.reset) {

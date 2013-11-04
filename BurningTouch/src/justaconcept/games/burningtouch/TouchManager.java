@@ -19,12 +19,10 @@ public class TouchManager extends ObjectManager {
 	    // Call a button if there is a click (not hold)
 	    if (!GameState.mouse_pressed) {
 		scene_objects_.get(Constants.BTN_OBJ_STR).touch(GameState.mouse_x, GameState.mouse_y);
-		GameState.draw_what = GameState.DrawWhat.scene;
 	    }
 	    // Invoke touching if buttons is not present.
 	    if (GameState.control == GameState.Control.none) {
 		scene_objects_.get(Constants.PPR_OBJ_STR).touch(GameState.mouse_x, GameState.mouse_y);
-		GameState.draw_what = GameState.DrawWhat.touch;
 	    }
 	} else {
 	    GameState.mouse_x = -1;

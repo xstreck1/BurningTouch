@@ -72,8 +72,9 @@ public class BurningTouch implements ApplicationListener {
 
     @Override
     public void resume() {
-	// TODO Auto-generated method stub
-
+	if (GameState.current_paper == GameState.latest_paper)
+	    ((DynamicPaper) scene_objects.get(Constants.PPR_OBJ_STR)).resume();
+	    
     }
 
     @Override
