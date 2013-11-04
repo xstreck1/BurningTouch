@@ -6,7 +6,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 public class Main {
     static public void loadGameState() {
 	GameState.current_paper = 1;
-	GameState.latest_paper = 2;
+	GameState.latest_paper = 1;
 	GameState.burned = false;
     }
     

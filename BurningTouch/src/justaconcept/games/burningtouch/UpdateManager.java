@@ -29,5 +29,8 @@ public class UpdateManager extends ObjectManager {
 	    
 	}
 	GameState.control = GameState.Control.none;
+	for (SceneObject scene_object : scene_objects_.values()) 
+	    scene_object.update();
+	    
     }
 }
