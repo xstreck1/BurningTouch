@@ -1,14 +1,17 @@
 package justaconcept.games.burningtouch;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 
 public class DynamicPaper extends BasicPaper {
     Pixmap current_mask_pix_;
+    ShapeRenderer renderer;
 
     int delay = 0;
 
@@ -28,6 +31,13 @@ public class DynamicPaper extends BasicPaper {
     private final float BURN_THRESHOLD = 0.9f;
     private final float BURN_STEP = 150f;
     private final float HEAT_MAX = 2.f;
+
+    private final float HEAT_R = 0.4f;
+    private final float HEAT_G = 0.1f;
+    private final float HEAT_B = 0.1f;	    
+    private final float HEAT_A = 0.3f;	
+    private final float HEAT_SIZE = 0.15f;
+    private final int HEAT_LAYERS = 10;
     
     private int last_x = 0;
     private int last_y = 0;
@@ -35,9 +45,10 @@ public class DynamicPaper extends BasicPaper {
     DynamicPaper(Pixmap current_mask_pix_) {
 	super();
 	this.current_mask_pix_ = current_mask_pix_;
+	renderer = new ShapeRenderer();
 	resume();
     }
-    
+
     public void resume() {
 	this.current_mask_ = new Texture(current_mask_pix_);
 	current_mask_pix_.setBlending(Pixmap.Blending.None);
@@ -74,7 +85,8 @@ public class DynamicPaper extends BasicPaper {
 	float distance = (float) Math.sqrt((last_x - mouse_x) * (last_x - mouse_x) + (last_y - mouse_y) * (last_y - mouse_y));
 	heat = Math.max(0f, heat - distance * MOVE_DECREASE * Gdx.graphics.getDeltaTime());
 
-	// Update the pixels based on the last position and their diametere from there
+	// Update the pixels based on the last position and their diametere from
+	// there
 	for (int x = Math.max(0, mouse_x - DIAMETER / 2); x < Math.min(Constants.GAME_WIDTH, mouse_x + DIAMETER / 2); x++) {
 	    int span = (int) Math.round(Math.sqrt(SQR_RAD - ((x - mouse_x) * (x - mouse_x))));
 	    for (int y = Math.max(0, mouse_y - span); y < Math.min(Constants.GAME_HEIGHT, mouse_y + span); y++) {
@@ -84,7 +96,7 @@ public class DynamicPaper extends BasicPaper {
 	    }
 	}
 	current_mask_.draw(current_mask_pix_, 0, 0);
-	
+
 	last_x = mouse_x;
 	last_y = mouse_y;
     }
@@ -93,9 +105,23 @@ public class DynamicPaper extends BasicPaper {
     public void update() {
 	heat = Math.max(heat - (Gdx.graphics.getDeltaTime() * HEAT_DECREASE), 0);
     }
-    
+
     @Override
     public void draw(SpriteBatch batch) {
 	super.draw(batch);
+	
+    }
+    
+    @Override
+    public void drawHeat(OrthographicCamera cam) {
+	if (GameState.mouse_pressed) {
+	    renderer.setProjectionMatrix(cam.combined);
+	    renderer.begin(ShapeType.Filled);
+	    float factor = Math.max(0,  heat - SHOW_THRESHOLD);
+	    renderer.setColor(HEAT_R * factor, HEAT_G * factor, HEAT_B * factor, (float) HEAT_A * factor / HEAT_LAYERS);
+	    for (int i = 0; i < HEAT_LAYERS; i++)
+		renderer.circle(last_x, Constants.GAME_HEIGHT - last_y, (DIAMETER / 2f) * (1 + HEAT_SIZE * i));
+	    renderer.end();
+	}
     }
 }

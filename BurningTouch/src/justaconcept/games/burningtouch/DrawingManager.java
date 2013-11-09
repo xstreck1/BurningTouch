@@ -29,7 +29,7 @@ public class DrawingManager extends ObjectManager {
     @Override
     void update() {
 	Gdx.gl.glClearColor(0, 0, 0, 1);
-	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);	
         
 	batch.begin();
 	scene_objects_.get(Constants.BG_OBJ_STR).draw(batch);
@@ -43,6 +43,9 @@ public class DrawingManager extends ObjectManager {
 	scene_objects_.get(Constants.PPR_OBJ_STR).draw(batch);
 	scene_objects_.get(Constants.BTN_OBJ_STR).draw(batch);
 	batch.end();
+	
+	Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
+	((BasicPaper) scene_objects_.get(Constants.PPR_OBJ_STR)).drawHeat(cam);
 	
 	resetCamera();
     }
