@@ -9,6 +9,7 @@ public class Sources {
     final static String BORDER_PIECE = "border_piece.png";
     
     final static String CLEAR_PAPER = "clear_paper.png";
+    final static String BURNED_PAPER = "burned_paper.png";
     
     final static String MASK_NAME = "mask";
     final static String MASK_SUFFIX = ".png";

@@ -1,7 +1,7 @@
 package justaconcept.games.burningtouch;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.MathUtils;
 public class DynamicPaper extends BasicPaper {
     Pixmap current_mask_pix_;
     ShapeRenderer renderer;
+    Texture burned_paper;
 
     // Heat space coverage
     final int DIAMETER = 60;
@@ -42,11 +43,23 @@ public class DynamicPaper extends BasicPaper {
     // Last touch
     private int last_x = 0;
     private int last_y = 0;
-    
+
     // State change
     private int uncovered = 0;
-    private final int UNCOVER_REQ = Constants.GAME_HEIGHT * Constants.GAME_WIDTH * 100; /// How many alpha points are required.
+    private int burned = 0;
+    // How many alpha points are required.
+    private final int UNCOVER_REQ = Constants.GAME_HEIGHT * Constants.GAME_WIDTH * 100;
+    // Something above the 66% must be burned
+    private final int BURN_REQ = DIAMETER * DIAMETER / 3;
 
+    // Afterburn
+    private int burning_radius = DIAMETER / 2 - JITTER;
+    private int max_radius = Constants.GAME_WIDTH;
+
+    // Animations
+    private final float BURN_TIME = 12f;
+    private float burning = 0;
+    
     DynamicPaper(Pixmap current_mask_pix_) {
 	super();
 	this.current_mask_pix_ = current_mask_pix_;
@@ -67,6 +80,9 @@ public class DynamicPaper extends BasicPaper {
      * Increase the value of the color pixels and alpha based on the heat.
      */
     private int morphPixel(int pixel) {
+	if ((pixel & 0xFFFFFF00) == 0xFFFFFF00)
+	    return pixel;
+	
 	int r = (pixel & 0xFF000000) >>> 24;
 	int g = (pixel & 0x00FF0000) >>> 16;
 	int b = (pixel & 0x0000FF00) >>> 8;
@@ -82,17 +98,27 @@ public class DynamicPaper extends BasicPaper {
 	r <<= 24;
 	g <<= 16;
 	b <<= 8;
-	return r | g | b | a;
+
+	int result = r | g | b | a;
+	burned += ((0xFFFFFFFF& result) == 0xFF) ? 1 : 0;
+	return result;
     }
 
-    private void drawPixel(final int x, final int y) {
-	int pixel = morphPixel(current_mask_pix_.getPixel(x, y));
-	current_mask_pix_.drawPixel(x, y, pixel);
-	// Set if the paper gets burned
-	if (pixel == 0xFFFFFFFF)
-	    GameState.paper_burned = true;
-    }
+    private void controlState() {
+	if (uncovered >= UNCOVER_REQ) {
+	    System.out.print("solved");
+	    GameState.paper_solved = true;
+	}
 
+	if (burned >= BURN_REQ) {
+	    System.out.print("burned");
+	    GameState.burned = true;
+	    GameState.paper_burning = true;
+	    burning = BURN_TIME;
+	    burned_paper = new Texture(Gdx.files.internal(Sources.BURNED_PAPER));
+	}	
+    }
+    
     @Override
     public void touch(int mouse_x, int mouse_y) {
 	// Change the heat based on the latest movement
@@ -102,21 +128,21 @@ public class DynamicPaper extends BasicPaper {
 
 	// Update the pixels based on the last position and their diameter from
 	// there
+	burned = 0;
 	for (int x = Math.max(0, mouse_x - DIAMETER / 2); x < Math.min(Constants.GAME_WIDTH, mouse_x + DIAMETER / 2); x++) {
 	    int span = (int) Math.round(Math.sqrt(SQR_RAD - ((x - mouse_x) * (x - mouse_x))));
 	    for (int y = Math.max(0, mouse_y - span); y < Math.min(Constants.GAME_HEIGHT, mouse_y + span); y++) {
 		double prob = ((DIAMETER / 2) - Math.sqrt((last_x - x) * (last_x - x) + (last_y - y) * (last_y - y))) / JITTER;
 		// On the borders draw only some
 		if (prob > 1f || prob > MathUtils.random()) {
-		    drawPixel(x,y);
+		    int pixel = morphPixel(current_mask_pix_.getPixel(x, y));
+		    current_mask_pix_.drawPixel(x, y, pixel);
 		}
 	    }
 	}
 	current_mask_.draw(current_mask_pix_, 0, 0);
 	
-	if (uncovered >= UNCOVER_REQ)
-	    GameState.paper_solved = true;
-
+	controlState();
 	last_x = mouse_x;
 	last_y = mouse_y;
     }
@@ -124,16 +150,28 @@ public class DynamicPaper extends BasicPaper {
     @Override
     public void update() {
 	heat = Math.max(heat - (Gdx.graphics.getDeltaTime() * HEAT_DECREASE), 0);
+	if (burning > 0) {
+	    burning -= Gdx.graphics.getDeltaTime();
+	}
     }
 
     @Override
     public void draw(SpriteBatch batch) {
 	super.draw(batch);
-
+	if (burning > 0) {
+	    Color color = batch.getColor();
+	    float old_a = color.a;
+	    color.a = (1f / BURN_TIME); // * Gdx.graphics.getDeltaTime();
+	    batch.setColor(color);
+	    batch.draw(burned_paper,0,0);
+	    color.a = old_a;
+	    batch.setColor(color);
+	}
     }
 
     @Override
     public void drawHeat(OrthographicCamera cam) {
+	// Draw warning circle if being heated.
 	if (GameState.mouse_pressed) {
 	    renderer.setProjectionMatrix(cam.combined);
 	    renderer.begin(ShapeType.Filled);
