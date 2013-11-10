@@ -20,4 +20,5 @@ public class Sources {
     
     final static String FORWARD_BUTTON = "forward_button.png";
     final static String BACKWARD_BUTTON = "backward_button.png";
+    final static String RESET_BUTTON = "reset_button.png";
 }

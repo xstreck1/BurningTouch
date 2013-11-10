@@ -12,7 +12,7 @@ public class TouchManager extends ObjectManager {
     @Override 
     void update()  {
 	
-	if (Gdx.input.isTouched()) {
+	if (Gdx.input.isTouched() && (!GameState.paper_burning) && (!GameState.paper_solved)) {
 	    GameState.mouse_x = Gdx.input.getX() - LayoutManager.getGame_X();
 	    GameState.mouse_y = Gdx.input.getY() - LayoutManager.getGame_Y();
 	    
@@ -21,14 +21,16 @@ public class TouchManager extends ObjectManager {
 		scene_objects_.get(Constants.BTN_OBJ_STR).touch(GameState.mouse_x, GameState.mouse_y);
 	    }
 	    // Invoke touching if buttons is not present.
-	    if (GameState.control == GameState.Control.none) {
+	    if ((GameState.control == GameState.Control.none) && !GameState.paper_burned) {
 		scene_objects_.get(Constants.PPR_OBJ_STR).touch(GameState.mouse_x, GameState.mouse_y);
 	    }
+	    GameState.mouse_pressed = true;
 	} else {
 	    GameState.mouse_x = -1;
-	    GameState.mouse_y = -1;	    
+	    GameState.mouse_y = -1;	
+	    GameState.mouse_pressed = false;
 	}
 	
-	GameState.mouse_pressed = Gdx.input.isTouched();
+	
     }
 }

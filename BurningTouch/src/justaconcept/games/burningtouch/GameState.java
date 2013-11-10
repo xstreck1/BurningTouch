@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 public class GameState {
     static public int current_paper = 1; // Numerical id of the currently used paper 
     static public int latest_paper = 1; // Numerical id of the paper the player is currently solving
-    static public boolean burned = false; // True after the player burns a paper
+    static public boolean failed_clear_play = false; // True after the player burns a paper
     
     static public Pixmap working_mask = null; // The text currently being elucidated 
     
@@ -19,6 +19,7 @@ public class GameState {
     
     
     static boolean paper_burning = false;
+    static boolean paper_burned = false;
     static boolean paper_solved = false;
     static boolean paper_blocked = false;
     static boolean buttons_blocked = false;

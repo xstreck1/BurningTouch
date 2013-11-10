@@ -57,7 +57,7 @@ public class DynamicPaper extends BasicPaper {
     private int max_radius = Constants.GAME_WIDTH;
 
     // Animations
-    private final float BURN_TIME = 12f;
+    private final float BURN_TIME = 1.5f;
     private float burning = 0;
     
     DynamicPaper(Pixmap current_mask_pix_) {
@@ -111,8 +111,9 @@ public class DynamicPaper extends BasicPaper {
 	}
 
 	if (burned >= BURN_REQ) {
+	    uncovered = 0;
 	    System.out.print("burned");
-	    GameState.burned = true;
+	    GameState.failed_clear_play = true;
 	    GameState.paper_burning = true;
 	    burning = BURN_TIME;
 	    burned_paper = new Texture(Gdx.files.internal(Sources.BURNED_PAPER));
@@ -152,16 +153,20 @@ public class DynamicPaper extends BasicPaper {
 	heat = Math.max(heat - (Gdx.graphics.getDeltaTime() * HEAT_DECREASE), 0);
 	if (burning > 0) {
 	    burning -= Gdx.graphics.getDeltaTime();
+	} else if (GameState.paper_burning) {
+	    GameState.paper_burning = false;
+	    GameState.paper_burned = true;
 	}
     }
 
     @Override
     public void draw(SpriteBatch batch) {
 	super.draw(batch);
-	if (burning > 0) {
+	// Overlay in case of failure
+	if (GameState.paper_burning || GameState.paper_burned) {
 	    Color color = batch.getColor();
 	    float old_a = color.a;
-	    color.a = (1f / BURN_TIME); // * Gdx.graphics.getDeltaTime();
+	    color.a = (1f / BURN_TIME) * (BURN_TIME - Math.max(burning, 0f));
 	    batch.setColor(color);
 	    batch.draw(burned_paper,0,0);
 	    color.a = old_a;
