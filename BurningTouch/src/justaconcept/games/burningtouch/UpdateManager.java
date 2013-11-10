@@ -8,7 +8,7 @@ public class UpdateManager extends ObjectManager {
 	super(scene_objects_);
     }
     
-    @Override void update()  {
+    private void resolveControl() {
 	if (GameState.control == GameState.Control.backward) {
 	    if (GameState.current_paper > 1) {
 		GameState.current_paper--;
@@ -29,6 +29,14 @@ public class UpdateManager extends ObjectManager {
 	    
 	}
 	GameState.control = GameState.Control.none;
+    }
+    
+    @Override void update()  {
+	resolveControl();
+	
+	if (GameState.paper_solved)
+	    System.out.println("Solved");
+	
 	for (SceneObject scene_object : scene_objects_.values()) 
 	    scene_object.update();
 	    

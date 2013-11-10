@@ -1,5 +1,6 @@
 package justaconcept.games.burningtouch;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -13,15 +14,13 @@ public class DynamicPaper extends BasicPaper {
     Pixmap current_mask_pix_;
     ShapeRenderer renderer;
 
-    int delay = 0;
-
+    // Heat space coverage
     final int DIAMETER = 60;
     final int JITTER = 10;
     final int RADIUS = DIAMETER / 2;
     final int SQR_RAD = (RADIUS) * (RADIUS);
 
-    boolean has_changed = false;
-
+    // Heat pixel manipulation
     private float heat = 0f;
     private final float HEAT_INCREASE = 2.5f;
     private final float HEAT_DECREASE = 1.2f;
@@ -32,15 +31,21 @@ public class DynamicPaper extends BasicPaper {
     private final float BURN_STEP = 150f;
     private final float HEAT_MAX = 2.f;
 
+    // Heat hint circle properties
     private final float HEAT_R = 0.4f;
     private final float HEAT_G = 0.1f;
-    private final float HEAT_B = 0.1f;	    
-    private final float HEAT_A = 0.3f;	
+    private final float HEAT_B = 0.1f;
+    private final float HEAT_A = 0.3f;
     private final float HEAT_SIZE = 0.15f;
     private final int HEAT_LAYERS = 10;
-    
+
+    // Last touch
     private int last_x = 0;
     private int last_y = 0;
+    
+    // State change
+    private int uncovered = 0;
+    private final int UNCOVER_REQ = Constants.GAME_HEIGHT * Constants.GAME_WIDTH * 100; /// How many alpha points are required.
 
     DynamicPaper(Pixmap current_mask_pix_) {
 	super();
@@ -66,16 +71,26 @@ public class DynamicPaper extends BasicPaper {
 	int g = (pixel & 0x00FF0000) >>> 16;
 	int b = (pixel & 0x0000FF00) >>> 8;
 	int a = pixel & 0x000000FF;
+	uncovered -= a;
 
 	r = burnColorPart(r);
 	g = burnColorPart(g);
 	b = burnColorPart(b);
 	a = Math.min(255, Math.round(a + Math.max(0, heat - SHOW_THRESHOLD) * SHOW_STEP * Gdx.graphics.getDeltaTime()));
+	uncovered += a;
 
 	r <<= 24;
 	g <<= 16;
 	b <<= 8;
 	return r | g | b | a;
+    }
+
+    private void drawPixel(final int x, final int y) {
+	int pixel = morphPixel(current_mask_pix_.getPixel(x, y));
+	current_mask_pix_.drawPixel(x, y, pixel);
+	// Set if the paper gets burned
+	if (pixel == 0xFFFFFFFF)
+	    GameState.paper_burned = true;
     }
 
     @Override
@@ -85,17 +100,22 @@ public class DynamicPaper extends BasicPaper {
 	float distance = (float) Math.sqrt((last_x - mouse_x) * (last_x - mouse_x) + (last_y - mouse_y) * (last_y - mouse_y));
 	heat = Math.max(0f, heat - distance * MOVE_DECREASE * Gdx.graphics.getDeltaTime());
 
-	// Update the pixels based on the last position and their diametere from
+	// Update the pixels based on the last position and their diameter from
 	// there
 	for (int x = Math.max(0, mouse_x - DIAMETER / 2); x < Math.min(Constants.GAME_WIDTH, mouse_x + DIAMETER / 2); x++) {
 	    int span = (int) Math.round(Math.sqrt(SQR_RAD - ((x - mouse_x) * (x - mouse_x))));
 	    for (int y = Math.max(0, mouse_y - span); y < Math.min(Constants.GAME_HEIGHT, mouse_y + span); y++) {
 		double prob = ((DIAMETER / 2) - Math.sqrt((last_x - x) * (last_x - x) + (last_y - y) * (last_y - y))) / JITTER;
-		if (prob > 1f || prob > MathUtils.random())
-		    current_mask_pix_.drawPixel(x, y, morphPixel(current_mask_pix_.getPixel(x, y)));
+		// On the borders draw only some
+		if (prob > 1f || prob > MathUtils.random()) {
+		    drawPixel(x,y);
+		}
 	    }
 	}
 	current_mask_.draw(current_mask_pix_, 0, 0);
+	
+	if (uncovered >= UNCOVER_REQ)
+	    GameState.paper_solved = true;
 
 	last_x = mouse_x;
 	last_y = mouse_y;
@@ -109,15 +129,15 @@ public class DynamicPaper extends BasicPaper {
     @Override
     public void draw(SpriteBatch batch) {
 	super.draw(batch);
-	
+
     }
-    
+
     @Override
     public void drawHeat(OrthographicCamera cam) {
 	if (GameState.mouse_pressed) {
 	    renderer.setProjectionMatrix(cam.combined);
 	    renderer.begin(ShapeType.Filled);
-	    float factor = Math.max(0,  heat - SHOW_THRESHOLD);
+	    float factor = Math.max(0, heat - SHOW_THRESHOLD);
 	    renderer.setColor(HEAT_R * factor, HEAT_G * factor, HEAT_B * factor, (float) HEAT_A * factor / HEAT_LAYERS);
 	    for (int i = 0; i < HEAT_LAYERS; i++)
 		renderer.circle(last_x, Constants.GAME_HEIGHT - last_y, (DIAMETER / 2f) * (1 + HEAT_SIZE * i));

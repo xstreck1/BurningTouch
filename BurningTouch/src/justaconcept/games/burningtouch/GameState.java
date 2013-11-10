@@ -16,4 +16,10 @@ public class GameState {
     static int mouse_x = -1;
     static int mouse_y = -1;
     static boolean mouse_pressed = false;
+    
+    
+    static boolean paper_burned = false;
+    static boolean paper_solved = false;
+    static boolean paper_blocked = false;
+    static boolean buttons_blocked = false;
 }

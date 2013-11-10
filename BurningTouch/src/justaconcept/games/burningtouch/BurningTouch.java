@@ -66,7 +66,6 @@ public class BurningTouch implements ApplicationListener {
 
     @Override
     public void pause() {
-	// TODO Auto-generated method stub
 
     }
 
@@ -79,13 +78,6 @@ public class BurningTouch implements ApplicationListener {
 
     @Override
     public void dispose() {
-	/* byte[] bytes = new byte[0];
-	try {
-	    bytes = PNG.toPNG(GameState.working_mask);
-	} catch (IOException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-	Gdx.files.internal(Sources.getMaskName(GameState.latest_paper)).writeBytes(bytes, false); */
+	
     }
 }
