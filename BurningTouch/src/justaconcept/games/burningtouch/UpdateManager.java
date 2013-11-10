@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 public class UpdateManager extends ObjectManager {
     
     public static void loadWorkingMask() {
+	if (GameState.working_mask != null)
+	    GameState.working_mask.dispose();
 	GameState.working_mask = new Pixmap(Gdx.files.internal(Sources.getMaskName(GameState.latest_paper)));
 
 	GameState.working_mask.setBlending(Pixmap.Blending.None);
