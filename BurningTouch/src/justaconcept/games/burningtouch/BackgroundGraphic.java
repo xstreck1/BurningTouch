@@ -10,8 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public class BackgroundGraphic implements SceneObject {
     // The images that constitute the board.
-    final Texture border_piece_;
-    final Texture corner_piece_;
+    final Texture t_border_piece_, r_border_piece_, b_border_piece_, l_border_piece_;
+    final Texture tl_corner_piece_, tr_corner_piece_, bl_corner_piece_, br_corner_piece_;
     final Texture inner_piece_;
 
     // The coordinates of the board itself - topleft corner and number of pieces
@@ -22,8 +22,14 @@ public class BackgroundGraphic implements SceneObject {
     final int rep_Y;
 
     BackgroundGraphic() {
-	border_piece_ = new Texture(Gdx.files.internal(Sources.BORDER_PIECE));
-	corner_piece_ = new Texture(Gdx.files.internal(Sources.CORNER_PIECE));
+	t_border_piece_ = new Texture(Gdx.files.internal(Sources.T_BORDER_PIECE));
+	r_border_piece_ = new Texture(Gdx.files.internal(Sources.R_BORDER_PIECE));
+	b_border_piece_ = new Texture(Gdx.files.internal(Sources.B_BORDER_PIECE));
+	l_border_piece_ = new Texture(Gdx.files.internal(Sources.L_BORDER_PIECE));
+	tl_corner_piece_ = new Texture(Gdx.files.internal(Sources.TL_CORNER_PIECE));
+	tr_corner_piece_ = new Texture(Gdx.files.internal(Sources.TR_CORNER_PIECE));
+	bl_corner_piece_ = new Texture(Gdx.files.internal(Sources.BL_CORNER_PIECE));
+	br_corner_piece_ = new Texture(Gdx.files.internal(Sources.BR_CORNER_PIECE));
 	inner_piece_ = new Texture(Gdx.files.internal(Sources.INNER_PIECE));
 
 	// Compute positions of where the pieces are to be displayed
@@ -45,10 +51,10 @@ public class BackgroundGraphic implements SceneObject {
      * Position and rotate the corners
      */
     void makeCorners(SpriteBatch batch) {
-	displayRotated(batch, corner_piece_, -l_corner_X, l_corner_Y, 90f);
-	displayRotated(batch, corner_piece_, -l_corner_X, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y, 0f);
-	displayRotated(batch, corner_piece_, Gdx.graphics.getWidth() - Constants.PIECE_SIZE + l_corner_X, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y, 270f);
-	displayRotated(batch, corner_piece_, Gdx.graphics.getWidth() - Constants.PIECE_SIZE + l_corner_X, l_corner_Y, 180f);
+	batch.draw(bl_corner_piece_, -l_corner_X, l_corner_Y);
+	batch.draw(tl_corner_piece_, -l_corner_X, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y);
+	batch.draw(tr_corner_piece_, Gdx.graphics.getWidth() - Constants.PIECE_SIZE + l_corner_X, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y);
+	batch.draw(br_corner_piece_, Gdx.graphics.getWidth() - Constants.PIECE_SIZE + l_corner_X, l_corner_Y);
     }
 
     /**
@@ -56,13 +62,12 @@ public class BackgroundGraphic implements SceneObject {
      */
     void makeBorders(SpriteBatch batch) {
 	for (int X = 1; X < (rep_X - 1); X++) {
-	    displayRotated(batch, border_piece_, -l_corner_X + X * Constants.PIECE_SIZE, l_corner_Y, 180f);
-	    displayRotated(batch, border_piece_, -l_corner_X + X * Constants.PIECE_SIZE, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y, 0f);
+	    batch.draw(b_border_piece_, -l_corner_X + X * Constants.PIECE_SIZE, l_corner_Y);
+	    batch.draw(t_border_piece_, -l_corner_X + X * Constants.PIECE_SIZE, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y);
 	}
 	for (int Y = 1; Y < (rep_Y - 1); Y++) {
-	    displayRotated(batch, border_piece_, -l_corner_X, l_corner_Y  + Y * Constants.PIECE_SIZE, 90f);
-	    displayRotated(batch, border_piece_, l_corner_X + Gdx.graphics.getWidth() - Constants.PIECE_SIZE, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y  - Y * Constants.PIECE_SIZE, 270f);
-
+	    batch.draw(l_border_piece_, -l_corner_X, l_corner_Y  + Y * Constants.PIECE_SIZE);
+	    batch.draw(r_border_piece_, l_corner_X + Gdx.graphics.getWidth() - Constants.PIECE_SIZE, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y  - Y * Constants.PIECE_SIZE);
 	}
     }
 

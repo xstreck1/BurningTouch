@@ -20,7 +20,8 @@ public class GameState {
     
     static boolean paper_burning = false;
     static boolean paper_burned = false;
-    static boolean paper_solved = false;
+    static boolean paper_clearing = false;
+    static boolean paper_cleared = false;
     static boolean paper_blocked = false;
     static boolean buttons_blocked = false;
 }

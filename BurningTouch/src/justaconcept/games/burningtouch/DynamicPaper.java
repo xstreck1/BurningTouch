@@ -14,6 +14,7 @@ public class DynamicPaper extends BasicPaper {
     Pixmap current_mask_pix_;
     ShapeRenderer renderer;
     Texture burned_paper;
+    Texture finished_paper;
 
     // Heat space coverage
     final int DIAMETER = 60;
@@ -48,17 +49,19 @@ public class DynamicPaper extends BasicPaper {
     private int uncovered = 0;
     private int burned = 0;
     // How many alpha points are required.
-    private final int UNCOVER_REQ = Constants.GAME_HEIGHT * Constants.GAME_WIDTH * 100;
+    private final int UNCOVER_REQ = Constants.GAME_HEIGHT * Constants.GAME_WIDTH * 50;
     // Something above the 66% must be burned
-    private final int BURN_REQ = DIAMETER * DIAMETER / 3;
+    private final int BURN_REQ = DIAMETER * DIAMETER / 4;
 
     // Afterburn
     private int burning_radius = DIAMETER / 2 - JITTER;
     private int max_radius = Constants.GAME_WIDTH;
 
     // Animations
-    private final float BURN_TIME = 1.5f;
+    private final float BURN_TIME = 2.5f;
     private float burning = 0;
+    private final float CLEAR_TIME = 5f;
+    private float clearing = 0;
     
     DynamicPaper(Pixmap current_mask_pix_) {
 	super();
@@ -107,10 +110,11 @@ public class DynamicPaper extends BasicPaper {
     private void controlState() {
 	if (uncovered >= UNCOVER_REQ) {
 	    System.out.print("solved");
-	    GameState.paper_solved = true;
+	    GameState.paper_clearing = true;
+	    clearing = CLEAR_TIME;
+	    finished_paper = new Texture(Gdx.files.internal(Sources.getMaskName(GameState.current_paper)));
 	}
-
-	if (burned >= BURN_REQ) {
+	else if (burned >= BURN_REQ) {
 	    uncovered = 0;
 	    System.out.print("burned");
 	    GameState.failed_clear_play = true;
@@ -157,12 +161,18 @@ public class DynamicPaper extends BasicPaper {
 	    GameState.paper_burning = false;
 	    GameState.paper_burned = true;
 	}
+	if (clearing > 0) {
+	    clearing -= Gdx.graphics.getDeltaTime();
+	} else if (GameState.paper_clearing) {
+	    GameState.paper_clearing = false;
+	    GameState.paper_cleared = true;
+	}
     }
 
     @Override
     public void draw(SpriteBatch batch) {
 	super.draw(batch);
-	// Overlay in case of failure
+	// Overlay in the case of failure
 	if (GameState.paper_burning || GameState.paper_burned) {
 	    Color color = batch.getColor();
 	    float old_a = color.a;
@@ -171,6 +181,16 @@ public class DynamicPaper extends BasicPaper {
 	    batch.draw(burned_paper,0,0);
 	    color.a = old_a;
 	    batch.setColor(color);
+	}
+	// Overlay in the case of success
+	if (GameState.paper_clearing || GameState.paper_cleared) {
+	    Color color = batch.getColor();
+	    float old_a = color.a;
+	    color.a = (1f / CLEAR_TIME) * (CLEAR_TIME - Math.max(clearing, 0f));
+	    batch.setColor(color);
+	    batch.draw(finished_paper,0,0);
+	    color.a = old_a;
+	    batch.setColor(color);	    
 	}
     }
 

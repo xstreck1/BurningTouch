@@ -50,8 +50,12 @@ public class UpdateManager extends ObjectManager {
     @Override void update()  {
 	resolveControl();
 	
-	if (GameState.paper_solved)
-	    System.out.println("Solved");
+	if (GameState.paper_cleared) {
+	    GameState.paper_cleared = false;
+	    scene_objects_.put(Constants.PPR_OBJ_STR, new StaticPaper(GameState.current_paper));
+	    GameState.latest_paper = Math.min(GameState.latest_paper + 1, Constants.PAPER_COUNT);
+	    loadWorkingMask();
+	}
 	
 	for (SceneObject scene_object : scene_objects_.values()) 
 	    scene_object.update();
