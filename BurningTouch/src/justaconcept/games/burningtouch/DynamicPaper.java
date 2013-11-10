@@ -49,9 +49,9 @@ public class DynamicPaper extends BasicPaper {
     private int uncovered = 0;
     private int burned = 0;
     // How many alpha points are required.
-    private final int UNCOVER_REQ = Constants.GAME_HEIGHT * Constants.GAME_WIDTH * 50;
-    // Something above the 66% must be burned
-    private final int BURN_REQ = DIAMETER * DIAMETER / 4;
+    private final int UNCOVER_REQ = Math.round(Constants.GAME_HEIGHT * Constants.GAME_WIDTH * 2.5f * Constants.CLEAR_TRHS);
+    // How much of the burn is required
+    private final int BURN_REQ = Math.round((DIAMETER - JITTER) * (DIAMETER - JITTER) * .75f * Constants.BURN_TRHS / 100f);
 
     // Afterburn
     private int burning_radius = DIAMETER / 2 - JITTER;
