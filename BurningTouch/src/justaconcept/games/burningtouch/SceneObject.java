@@ -8,4 +8,6 @@ public interface SceneObject {
     void update();
     
     void touch(final int mouse_x, final int mouse_y);
+    
+    void dispose();
 }

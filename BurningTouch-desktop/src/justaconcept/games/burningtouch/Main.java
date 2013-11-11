@@ -24,8 +24,11 @@ public class Main {
 	    GameState.current_paper = Integer.parseInt(prop.getProperty("current_paper"));
 	    GameState.latest_paper = Integer.parseInt(prop.getProperty("latest_paper"));
 	    GameState.failed_clear_play = Boolean.parseBoolean(prop.getProperty("failed_clear_play"));
-	    Constants.CLEAR_TRHS = Integer.parseInt(prop.getProperty("clear_thrs"));
-	    Constants.BURN_TRHS = Integer.parseInt(prop.getProperty("burn_thrs"));
+	    Constants.CLEAR_TRHS = Float.parseFloat(prop.getProperty("clear_thrs"));
+	    Constants.BURN_TRHS = Float.parseFloat(prop.getProperty("burn_thrs"));
+	    Constants.BG_VOLUME = Float.parseFloat(prop.getProperty("bg_volume"));
+	    Constants.BURN_VOLUME = Float.parseFloat(prop.getProperty("burn_volume"));
+	    Constants.SUCC_VOLUME = Float.parseFloat(prop.getProperty("succ_volume"));
 	} catch (IOException ex) {
 	    ex.printStackTrace();
 	}

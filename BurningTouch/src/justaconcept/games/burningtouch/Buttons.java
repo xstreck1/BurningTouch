@@ -58,4 +58,11 @@ public class Buttons implements SceneObject {
     @Override
     public void update() {
     }
+    
+    @Override
+    public void dispose() {
+	backward_button.dispose();
+	forward_button.dispose();
+	reset_button.dispose();
+    }
 }

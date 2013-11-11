@@ -21,4 +21,9 @@ public abstract class BasicPaper implements SceneObject {
     }
     
     public void drawHeat(OrthographicCamera cam) {}
+    
+    public void dispose() {
+	clear_paper_.dispose();
+	current_mask_.dispose();
+    }
 }

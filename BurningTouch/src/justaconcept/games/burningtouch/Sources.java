@@ -29,4 +29,8 @@ public class Sources {
     final static String FORWARD_BUTTON = "forward_button.png";
     final static String BACKWARD_BUTTON = "backward_button.png";
     final static String RESET_BUTTON = "reset_button.png";
+    
+    final static String BG_MUSIC = "background.mp3";
+    final static String BURN_SOUND = "burn.mp3";
+    final static String SUCC_SOUND = "succ.mp3";
 }

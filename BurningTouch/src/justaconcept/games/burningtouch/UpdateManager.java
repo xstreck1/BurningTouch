@@ -28,13 +28,13 @@ public class UpdateManager extends ObjectManager {
 	if (GameState.control == GameState.Control.backward) {
 	    if (GameState.current_paper > 1) {
 		GameState.current_paper--;
-		scene_objects_.remove(Constants.PPR_OBJ_STR);
+		scene_objects_.get(Constants.PPR_OBJ_STR).dispose();
 		scene_objects_.put(Constants.PPR_OBJ_STR, new StaticPaper(GameState.current_paper));
 	    }
 	} else if (GameState.control == GameState.Control.forward) {
 	    if (GameState.current_paper < GameState.latest_paper) {
 		GameState.current_paper++;
-		scene_objects_.remove(Constants.PPR_OBJ_STR);
+		scene_objects_.get(Constants.PPR_OBJ_STR).dispose();
 	    } 
 	    if (GameState.current_paper < GameState.latest_paper || GameState.current_paper == Constants.PAPER_COUNT) {
 		scene_objects_.put(Constants.PPR_OBJ_STR, new StaticPaper(GameState.current_paper));
@@ -44,6 +44,7 @@ public class UpdateManager extends ObjectManager {
 	} else if (GameState.control == GameState.Control.reset) {
 	    GameState.paper_burned = false;
 	    loadWorkingMask();
+	    scene_objects_.get(Constants.PPR_OBJ_STR).dispose();
 	    scene_objects_.put(Constants.PPR_OBJ_STR, new DynamicPaper(GameState.working_mask));
 	}
 	GameState.control = GameState.Control.none;
@@ -54,6 +55,7 @@ public class UpdateManager extends ObjectManager {
 	
 	if (GameState.paper_cleared) {
 	    GameState.paper_cleared = false;
+	    scene_objects_.get(Constants.PPR_OBJ_STR).dispose();
 	    scene_objects_.put(Constants.PPR_OBJ_STR, new StaticPaper(GameState.current_paper));
 	    GameState.latest_paper = Math.min(GameState.latest_paper + 1, Constants.PAPER_COUNT);
 	    if (GameState.latest_paper != Constants.PAPER_COUNT)

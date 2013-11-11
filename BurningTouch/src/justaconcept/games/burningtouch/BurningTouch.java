@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -29,6 +30,8 @@ public class BurningTouch implements ApplicationListener {
     private Skin skin;
     private Table table;
     private BitmapFont buttonFont;
+    
+    private Sound background_music;
 
     void setUpStage() {
 	stage = new Stage();
@@ -65,6 +68,13 @@ public class BurningTouch implements ApplicationListener {
 
 	pixmap.dispose();
     }
+    
+    void loadMusic() {
+	background_music = Gdx.audio.newSound(Gdx.files.internal(Sources.BG_MUSIC));
+	background_music.loop(Constants.BG_VOLUME);
+	GameState.burn = Gdx.audio.newSound(Gdx.files.internal(Sources.BURN_SOUND));
+	GameState.succ = Gdx.audio.newSound(Gdx.files.internal(Sources.SUCC_SOUND));
+    }
 
     @Override
     public void create() {
@@ -93,6 +103,8 @@ public class BurningTouch implements ApplicationListener {
 	touch_manager = new TouchManager(scene_objects);
 
 	logger = new FPSLogger();
+	
+	loadMusic();
     }
 
     @Override
@@ -112,13 +124,15 @@ public class BurningTouch implements ApplicationListener {
 
     @Override
     public void pause() {
-
+	background_music.pause();
     }
 
     @Override
     public void resume() {
 	if (GameState.current_paper == GameState.latest_paper)
 	    ((DynamicPaper) scene_objects.get(Constants.PPR_OBJ_STR)).resume();
+	
+	background_music.resume();
     }
 
     @Override
@@ -126,5 +140,10 @@ public class BurningTouch implements ApplicationListener {
 	stage.dispose();
 	buttonFont.dispose();
 	skin.dispose();
+	background_music.dispose();
+	GameState.burn.dispose();
+	GameState.succ.dispose();
+	for (SceneObject scene_object : scene_objects.values()) 
+	    scene_object.update();
     }
 }

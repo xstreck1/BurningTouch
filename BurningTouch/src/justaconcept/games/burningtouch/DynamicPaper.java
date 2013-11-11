@@ -1,6 +1,7 @@
 package justaconcept.games.burningtouch;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -13,8 +14,8 @@ import com.badlogic.gdx.math.MathUtils;
 public class DynamicPaper extends BasicPaper {
     Pixmap current_mask_pix_;
     ShapeRenderer renderer;
-    Texture burned_paper;
-    Texture finished_paper;
+    Texture burned_paper = null;
+    Texture finished_paper = null;
 
     // Heat space coverage
     final int DIAMETER = 60;
@@ -49,9 +50,9 @@ public class DynamicPaper extends BasicPaper {
     private int uncovered = 0;
     private int burned = 0;
     // How many alpha points are required.
-    private final int UNCOVER_REQ = Math.round(Constants.GAME_HEIGHT * Constants.GAME_WIDTH * 2.5f * Constants.CLEAR_TRHS);
+    private final int UNCOVER_REQ = Math.round(Constants.GAME_HEIGHT * Constants.GAME_WIDTH * 2.5f * Constants.CLEAR_TRHS * 100f);
     // How much of the burn is required
-    private final int BURN_REQ = Math.round((DIAMETER - JITTER) * (DIAMETER - JITTER) * .75f * Constants.BURN_TRHS / 100f);
+    private final int BURN_REQ = Math.round((DIAMETER - JITTER) * (DIAMETER - JITTER) * .75f * Constants.BURN_TRHS);
 
     // Afterburn
     private int burning_radius = DIAMETER / 2 - JITTER;
@@ -113,6 +114,7 @@ public class DynamicPaper extends BasicPaper {
 	    GameState.paper_clearing = true;
 	    clearing = CLEAR_TIME;
 	    finished_paper = new Texture(Gdx.files.internal(Sources.getMaskName(GameState.current_paper)));
+	    GameState.succ.play(Constants.SUCC_VOLUME);
 	}
 	else if (burned >= BURN_REQ) {
 	    uncovered = 0;
@@ -121,6 +123,7 @@ public class DynamicPaper extends BasicPaper {
 	    GameState.paper_burning = true;
 	    burning = BURN_TIME;
 	    burned_paper = new Texture(Gdx.files.internal(Sources.BURNED_PAPER));
+	    GameState.burn.play(Constants.BURN_VOLUME);
 	}	
     }
     
@@ -205,5 +208,15 @@ public class DynamicPaper extends BasicPaper {
 		renderer.circle(last_x, Constants.GAME_HEIGHT - last_y, (DIAMETER / 2f) * (1 + HEAT_SIZE * i));
 	    renderer.end();
 	}
+    }
+    
+    @Override
+    public void dispose() {
+	super.dispose();
+	renderer.dispose();
+	if (burned_paper != null)
+	    burned_paper.dispose();
+	if (finished_paper != null)
+	    finished_paper.dispose();
     }
 }

@@ -1,5 +1,6 @@
 package justaconcept.games.burningtouch;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Pixmap;
 
 public class GameState {
@@ -8,6 +9,8 @@ public class GameState {
     static public boolean failed_clear_play = false; // True after the player burns a paper
     
     static public Pixmap working_mask = null; // The text currently being elucidated 
+    static public Sound burn = null;
+    static public Sound succ = null;
     
     public enum Control {
 	forward, backward, reset, none;

@@ -93,4 +93,17 @@ public class BackgroundGraphic implements SceneObject {
 	// TODO Auto-generated method stub
 
     }
+
+    @Override
+    public void dispose() {
+	t_border_piece_.dispose();
+	r_border_piece_.dispose();
+	b_border_piece_.dispose();
+	l_border_piece_.dispose();
+	tl_corner_piece_.dispose();
+	tr_corner_piece_.dispose();
+	bl_corner_piece_.dispose();
+	br_corner_piece_.dispose();
+	inner_piece_.dispose();
+    }
 }
