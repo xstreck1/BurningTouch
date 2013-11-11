@@ -24,21 +24,21 @@ public class DynamicPaper extends BasicPaper {
 
     // Heat pixel manipulation
     private float heat = 0f;
-    private final float HEAT_INCREASE = 2.5f;
-    private final float HEAT_DECREASE = 1.2f;
-    private final float MOVE_DECREASE = 1.6f;
-    private final float SHOW_THRESHOLD = 0.4f;
+    private final float HEAT_INCREASE = 2.25f;
+    private final float HEAT_DECREASE = 1.0f;
+    private final float MOVE_DECREASE = 1.3f;
+    private final float SHOW_THRESHOLD = 0.5f;
     private final float SHOW_STEP = 100f;
-    private final float BURN_THRESHOLD = 0.9f;
+    private final float BURN_THRESHOLD = 1.0f;
     private final float BURN_STEP = 150f;
     private final float HEAT_MAX = 2.f;
 
     // Heat hint circle properties
-    private final float HEAT_R = 0.4f;
-    private final float HEAT_G = 0.1f;
-    private final float HEAT_B = 0.1f;
-    private final float HEAT_A = 0.3f;
-    private final float HEAT_SIZE = 0.15f;
+    private final float HEAT_R = 0.3f;
+    private final float HEAT_G = 0.08f;
+    private final float HEAT_B = 0.08f;
+    private final float HEAT_A = 0.25f;
+    private final float HEAT_SIZE = 0.22f;
     private final int HEAT_LAYERS = 10;
 
     // Last touch
@@ -200,8 +200,7 @@ public class DynamicPaper extends BasicPaper {
 	if (GameState.mouse_pressed) {
 	    renderer.setProjectionMatrix(cam.combined);
 	    renderer.begin(ShapeType.Filled);
-	    float factor = Math.max(0, heat - SHOW_THRESHOLD);
-	    renderer.setColor(HEAT_R * factor, HEAT_G * factor, HEAT_B * factor, (float) HEAT_A * factor / HEAT_LAYERS);
+	    renderer.setColor(HEAT_R * heat, HEAT_G * heat, HEAT_B * heat, (float) HEAT_A * heat / HEAT_LAYERS);
 	    for (int i = 0; i < HEAT_LAYERS; i++)
 		renderer.circle(last_x, Constants.GAME_HEIGHT - last_y, (DIAMETER / 2f) * (1 + HEAT_SIZE * i));
 	    renderer.end();

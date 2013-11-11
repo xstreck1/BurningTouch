@@ -14,5 +14,5 @@ public class Constants {
     
     static int PAPER_COUNT = 3;
     static int CLEAR_TRHS = 25;
-    static int BURN_TRHS = 100;
+    static int BURN_TRHS = 45;
 }

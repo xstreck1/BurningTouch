@@ -29,9 +29,9 @@ public class Buttons implements SceneObject {
     }
 
     private GameState.Control getControlButton(int mouse_x, int mouse_y) {
-	if (!GameState.paper_burned && BACKWARD_BTN_POS.contains(mouse_x, mouse_y))
+	if (!GameState.paper_burned && BACKWARD_BTN_POS.contains(mouse_x, mouse_y) && GameState.current_paper != 1)
 	    return GameState.Control.backward;
-	if (!GameState.paper_burned && FORWARD_BTN_POS.contains(mouse_x, mouse_y))
+	if (!GameState.paper_burned && FORWARD_BTN_POS.contains(mouse_x, mouse_y) && GameState.current_paper != GameState.latest_paper)
 	    return GameState.Control.forward;
 	if (GameState.paper_burned && RESET_BTN_POS.contains(mouse_x, mouse_y))
 	    return GameState.Control.reset;
@@ -48,8 +48,10 @@ public class Buttons implements SceneObject {
 	if (GameState.paper_burned)
 	    batch.draw(reset_button, RESET_BTN_POS.x, RESET_BTN_POS.y);
 	else {
-	    batch.draw(backward_button, BACKWARD_BTN_POS.x, BACKWARD_BTN_POS.y);
-	    batch.draw(forward_button, FORWARD_BTN_POS.x, FORWARD_BTN_POS.y);
+	    if (GameState.current_paper != 1)
+		batch.draw(backward_button, BACKWARD_BTN_POS.x, BACKWARD_BTN_POS.y);
+	    if (GameState.current_paper != GameState.latest_paper)
+		batch.draw(forward_button, FORWARD_BTN_POS.x, FORWARD_BTN_POS.y);
 	}
     }
 

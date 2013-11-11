@@ -24,6 +24,8 @@ public class Main {
 	    GameState.current_paper = Integer.parseInt(prop.getProperty("current_paper"));
 	    GameState.latest_paper = Integer.parseInt(prop.getProperty("latest_paper"));
 	    GameState.failed_clear_play = Boolean.parseBoolean(prop.getProperty("failed_clear_play"));
+	    Constants.CLEAR_TRHS = Integer.parseInt(prop.getProperty("clear_thrs"));
+	    Constants.BURN_TRHS = Integer.parseInt(prop.getProperty("burn_thrs"));
 	} catch (IOException ex) {
 	    ex.printStackTrace();
 	}
