@@ -30,8 +30,7 @@ public class BurningTouch implements ApplicationListener {
     private Skin skin;
     private Table table;
     private BitmapFont buttonFont;
-    
-    private Sound background_music;
+    private int time_delay = 120;
 
     void setUpStage() {
 	stage = new Stage();
@@ -49,13 +48,13 @@ public class BurningTouch implements ApplicationListener {
 	Pixmap pixmap = new Pixmap(1, 1, Format.RGBA8888);
 	pixmap.setColor(Color.WHITE);
 	pixmap.fill();
-	skin.add("white", new Texture(pixmap));
+	skin.add(Messages.getString("BurningTouch.0"), new Texture(pixmap)); //$NON-NLS-1$
 
 	TextButtonStyle textButtonStyle = new TextButtonStyle();
-	textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
-	textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-	textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
-	textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
+	textButtonStyle.up = skin.newDrawable(Messages.getString("BurningTouch.0"), Color.DARK_GRAY); //$NON-NLS-1$
+	textButtonStyle.down = skin.newDrawable(Messages.getString("BurningTouch.0"), Color.DARK_GRAY); //$NON-NLS-1$
+	textButtonStyle.checked = skin.newDrawable(Messages.getString("BurningTouch.0"), Color.BLUE); //$NON-NLS-1$
+	textButtonStyle.over = skin.newDrawable(Messages.getString("BurningTouch.0"), Color.LIGHT_GRAY); //$NON-NLS-1$
 	textButtonStyle.font = buttonFont;
 	TextButton button1 = new TextButton(error, textButtonStyle);
 	button1.addListener(new ClickListener() {
@@ -70,20 +69,24 @@ public class BurningTouch implements ApplicationListener {
     }
     
     void loadMusic() {
-	background_music = Gdx.audio.newSound(Gdx.files.internal(Sources.BG_MUSIC));
-	background_music.loop(Constants.BG_VOLUME);
-	GameState.burn = Gdx.audio.newSound(Gdx.files.internal(Sources.BURN_SOUND));
-	GameState.succ = Gdx.audio.newSound(Gdx.files.internal(Sources.SUCC_SOUND));
+	if (GameState.background_music == null)
+	    GameState.background_music = Gdx.audio.newSound(Gdx.files.internal(Sources.BG_MUSIC));
+	if (GameState.burn == null)
+	    GameState.burn = Gdx.audio.newSound(Gdx.files.internal(Sources.BURN_SOUND));
+	if (GameState.succ == null)
+	    GameState.succ = Gdx.audio.newSound(Gdx.files.internal(Sources.SUCC_SOUND));
+	
     }
 
     @Override
     public void create() {
+	
 	setUpStage();
 
 	try {
 	    LayoutManager.testResolution();
 	} catch (Exception error) {
-	    showError("An exception has occured: \n" + error.getMessage() + "\nThe application will terminate.");
+	    showError(Messages.getString("BurningTouch.1") + error.getMessage() + Messages.getString("BurningTouch.2")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	UpdateManager.loadWorkingMask();
@@ -105,6 +108,7 @@ public class BurningTouch implements ApplicationListener {
 	logger = new FPSLogger();
 	
 	loadMusic();
+	GameState.reset();
     }
 
     @Override
@@ -120,19 +124,24 @@ public class BurningTouch implements ApplicationListener {
 	logger.log();
 	stage.act(Gdx.graphics.getDeltaTime());
 	stage.draw();
+	if (time_delay-- == 0) {
+	    GameState.background_music.loop(Constants.BG_VOLUME);
+	}
     }
 
     @Override
     public void pause() {
-	background_music.pause();
+	if (GameState.current_paper == GameState.latest_paper && GameState.current_paper != Constants.PAPER_COUNT)
+	    ((DynamicPaper) scene_objects.get(Constants.PPR_OBJ_STR)).pause();
+	GameState.background_music.pause();
     }
 
     @Override
     public void resume() {
-	if (GameState.current_paper == GameState.latest_paper)
+	if (GameState.current_paper == GameState.latest_paper && GameState.current_paper != Constants.PAPER_COUNT)
 	    ((DynamicPaper) scene_objects.get(Constants.PPR_OBJ_STR)).resume();
-	
-	background_music.resume();
+	if (GameState.play_sound)
+	    GameState.background_music.loop(Constants.BG_VOLUME);
     }
 
     @Override
@@ -140,9 +149,12 @@ public class BurningTouch implements ApplicationListener {
 	stage.dispose();
 	buttonFont.dispose();
 	skin.dispose();
-	background_music.dispose();
+	GameState.background_music.dispose();
+	GameState.background_music = null;
 	GameState.burn.dispose();
+	GameState.burn = null;
 	GameState.succ.dispose();
+	GameState.succ = null;
 	for (SceneObject scene_object : scene_objects.values()) 
 	    scene_object.update();
     }

@@ -63,7 +63,7 @@ public class DynamicPaper extends BasicPaper {
     private float burning = 0;
     private final float CLEAR_TIME = 5f;
     private float clearing = 0;
-    
+
     DynamicPaper(Pixmap current_mask_pix_) {
 	super();
 	this.current_mask_pix_ = current_mask_pix_;
@@ -76,6 +76,10 @@ public class DynamicPaper extends BasicPaper {
 	current_mask_pix_.setBlending(Pixmap.Blending.None);
     }
 
+    public void pause() {
+	this.current_mask_.dispose();
+    }
+    
     int burnColorPart(int color_part) {
 	return Math.max(0, Math.round(color_part - Math.max(0, heat - BURN_THRESHOLD) * BURN_STEP * Gdx.graphics.getDeltaTime()));
     }
@@ -86,7 +90,7 @@ public class DynamicPaper extends BasicPaper {
     private int morphPixel(int pixel) {
 	if ((pixel & 0xFFFFFF00) == 0xFFFFFF00)
 	    return pixel;
-	
+
 	int r = (pixel & 0xFF000000) >>> 24;
 	int g = (pixel & 0x00FF0000) >>> 16;
 	int b = (pixel & 0x0000FF00) >>> 8;
@@ -104,7 +108,7 @@ public class DynamicPaper extends BasicPaper {
 	b <<= 8;
 
 	int result = r | g | b | a;
-	burned += ((0xFFFFFFFF& result) == 0xFF) ? 1 : 0;
+	burned += ((0xFFFFFFFF & result) == 0xFF) ? 1 : 0;
 	return result;
     }
 
@@ -114,19 +118,21 @@ public class DynamicPaper extends BasicPaper {
 	    GameState.paper_clearing = true;
 	    clearing = CLEAR_TIME;
 	    finished_paper = new Texture(Gdx.files.internal(Sources.getMaskName(GameState.current_paper)));
-	    GameState.succ.play(Constants.SUCC_VOLUME);
-	}
-	else if (burned >= BURN_REQ) {
+	    if (GameState.play_sound)
+		GameState.succ.play(Constants.SUCC_VOLUME);
+	} else if (burned >= BURN_REQ) {
 	    uncovered = 0;
 	    System.out.print("burned");
 	    GameState.failed_clear_play = true;
 	    GameState.paper_burning = true;
 	    burning = BURN_TIME;
 	    burned_paper = new Texture(Gdx.files.internal(Sources.BURNED_PAPER));
-	    GameState.burn.play(Constants.BURN_VOLUME);
-	}	
+	    if (GameState.play_sound)
+		GameState.burn.play(Constants.BURN_VOLUME);
+	    
+	}
     }
-    
+
     @Override
     public void touch(int mouse_x, int mouse_y) {
 	// Change the heat based on the latest movement
@@ -149,7 +155,7 @@ public class DynamicPaper extends BasicPaper {
 	    }
 	}
 	current_mask_.draw(current_mask_pix_, 0, 0);
-	
+
 	controlState();
 	last_x = mouse_x;
 	last_y = mouse_y;
@@ -181,7 +187,7 @@ public class DynamicPaper extends BasicPaper {
 	    float old_a = color.a;
 	    color.a = (1f / BURN_TIME) * (BURN_TIME - Math.max(burning, 0f));
 	    batch.setColor(color);
-	    batch.draw(burned_paper,0,0);
+	    batch.draw(burned_paper, 0, 0);
 	    color.a = old_a;
 	    batch.setColor(color);
 	}
@@ -191,9 +197,9 @@ public class DynamicPaper extends BasicPaper {
 	    float old_a = color.a;
 	    color.a = (1f / CLEAR_TIME) * (CLEAR_TIME - Math.max(clearing, 0f));
 	    batch.setColor(color);
-	    batch.draw(finished_paper,0,0);
+	    batch.draw(finished_paper, 0, 0);
 	    color.a = old_a;
-	    batch.setColor(color);	    
+	    batch.setColor(color);
 	}
     }
 
@@ -209,7 +215,7 @@ public class DynamicPaper extends BasicPaper {
 	    renderer.end();
 	}
     }
-    
+
     @Override
     public void dispose() {
 	super.dispose();
