@@ -8,13 +8,6 @@
 	<classpathentry exported="true" kind="lib" path="/BurningTouch/libs/gdx.jar" sourcepath="/BurningTouch/libs/gdx-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/gdx-backend-android.jar" sourcepath="libs/gdx-backend-android-sources.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry kind="lib" path="C:/Users/adams_000/UTILITIES/Android/sdk/platforms/android-10/android.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="http://developer.android.com/reference/"/>
-		</attributes>
-		<accessrules>
-			<accessrule kind="nonaccessible" pattern="com/android/internal/**"/>
-		</accessrules>
-	</classpathentry>
+	<classpathentry kind="lib" path="D:/Software/Android/sdk/platforms/android-10/android.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

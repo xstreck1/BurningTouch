@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
  * space behind the board.
  */
 public class Buttons implements SceneObject {
-    private final int BUTTON_DIM = 50;
+    private final int BUTTON_DIM = 65;
     private final Rectangle BACKWARD_BTN_POS;
     private final Rectangle FORWARD_BTN_POS;
     private final Rectangle RESET_BTN_POS;
