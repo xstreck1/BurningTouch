@@ -129,6 +129,7 @@ public class BurningTouch implements ApplicationListener {
 	    if (asset_manager.isLoaded(Sources.BG_MUSIC)) {
                 GameState.background_music = asset_manager.get(Sources.BG_MUSIC);
                 GameState.background_music.play();
+                GameState.background_music.setLooping(true);
                 GameState.background_music.setVolume(Constants.BG_VOLUME);
 	    } else {
 		asset_manager.update();

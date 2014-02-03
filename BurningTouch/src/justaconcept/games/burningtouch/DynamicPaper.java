@@ -35,11 +35,11 @@ public class DynamicPaper extends BasicPaper {
     private final float HEAT_MAX = 2.f;
 
     // Heat hint circle properties
-    private final float HEAT_R = 0.3f;
+    private final float HEAT_R = 0.40f;
     private final float HEAT_G = 0.08f;
     private final float HEAT_B = 0.08f;
-    private final float HEAT_A = 0.25f;
-    private final float HEAT_SIZE = 0.22f;
+    private final float HEAT_A = 0.35f;
+    private final float HEAT_SIZE = 0.25f;
     private final int HEAT_LAYERS = 10;
 
     // Last touch
