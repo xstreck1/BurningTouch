@@ -4,7 +4,8 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -26,6 +27,7 @@ public class BurningTouch implements ApplicationListener {
     private HashMap<String, SceneObject> scene_objects;
     private FPSLogger logger;
 
+    private AssetManager asset_manager = new AssetManager();
     private Stage stage;
     private Skin skin;
     private Table table;
@@ -69,13 +71,12 @@ public class BurningTouch implements ApplicationListener {
     }
     
     void loadMusic() {
-	if (GameState.background_music == null)
-	    GameState.background_music = Gdx.audio.newSound(Gdx.files.internal(Sources.BG_MUSIC));
-	if (GameState.burn == null)
-	    GameState.burn = Gdx.audio.newSound(Gdx.files.internal(Sources.BURN_SOUND));
 	if (GameState.succ == null)
 	    GameState.succ = Gdx.audio.newSound(Gdx.files.internal(Sources.SUCC_SOUND));
-	
+	if (GameState.burn == null)
+	    GameState.burn = Gdx.audio.newSound(Gdx.files.internal(Sources.BURN_SOUND));
+	if (GameState.background_music == null)
+	    asset_manager.load(Sources.BG_MUSIC, Music.class);
     }
 
     @Override
@@ -124,8 +125,14 @@ public class BurningTouch implements ApplicationListener {
 	logger.log();
 	stage.act(Gdx.graphics.getDeltaTime());
 	stage.draw();
-	if (time_delay-- == 0) {
-	    GameState.background_music.loop(Constants.BG_VOLUME);
+	if (GameState.background_music == null) {
+	    if (asset_manager.isLoaded(Sources.BG_MUSIC)) {
+                GameState.background_music = asset_manager.get(Sources.BG_MUSIC);
+                GameState.background_music.play();
+                GameState.background_music.setVolume(Constants.BG_VOLUME);
+	    } else {
+		asset_manager.update();
+	    }
 	}
     }
 
@@ -133,15 +140,16 @@ public class BurningTouch implements ApplicationListener {
     public void pause() {
 	if (GameState.current_paper == GameState.latest_paper && GameState.current_paper != Constants.PAPER_COUNT)
 	    ((DynamicPaper) scene_objects.get(Constants.PPR_OBJ_STR)).pause();
-	GameState.background_music.pause();
+	if (GameState.background_music != null)
+	    GameState.background_music.pause();
     }
 
     @Override
     public void resume() {
 	if (GameState.current_paper == GameState.latest_paper && GameState.current_paper != Constants.PAPER_COUNT)
 	    ((DynamicPaper) scene_objects.get(Constants.PPR_OBJ_STR)).resume();
-	if (GameState.play_sound)
-	    GameState.background_music.loop(Constants.BG_VOLUME);
+	if (GameState.play_sound && GameState.background_music != null)
+	    GameState.background_music.play();
     }
 
     @Override
@@ -149,8 +157,8 @@ public class BurningTouch implements ApplicationListener {
 	stage.dispose();
 	buttonFont.dispose();
 	skin.dispose();
-	GameState.background_music.dispose();
-	GameState.background_music = null;
+	asset_manager.unload(Sources.BG_MUSIC);
+	asset_manager.dispose();
 	GameState.burn.dispose();
 	GameState.burn = null;
 	GameState.succ.dispose();

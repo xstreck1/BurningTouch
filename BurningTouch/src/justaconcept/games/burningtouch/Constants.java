@@ -12,9 +12,9 @@ public class Constants {
     static final String PPR_OBJ_STR = "paper_object";
     static final String BTN_OBJ_STR = "buttons_object";
     
-    static int PAPER_COUNT = 3;
+    static int PAPER_COUNT = 11;
     static float CLEAR_TRHS = 0.25f;
-    static float BURN_TRHS = 0.5f;
+    static float BURN_TRHS = 0.45f;
     
     static float BG_VOLUME = 0.4f;
     static float BURN_VOLUME = 0.4f;

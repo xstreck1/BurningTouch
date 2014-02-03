@@ -1,5 +1,6 @@
 package justaconcept.games.burningtouch;
 
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Pixmap;
 
@@ -17,7 +18,7 @@ public class GameState {
 					      // elucidated
     static public Sound burn = null;
     static public Sound succ = null;
-    static public Sound background_music = null;
+    static public Music background_music = null;
 
     public enum Control {
 	forward, backward, reset, none;
