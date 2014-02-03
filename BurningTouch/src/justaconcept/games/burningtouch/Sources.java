@@ -19,8 +19,6 @@ public class Sources {
     
     final static String MASK_NAME = "mask";
     final static String MASK_SUFFIX = ".png";
-    final static String MASK_LAST_FAIL = "final_fail.png";
-    final static String MASK_LAST_SUCC = "final_succ.png";
     
     static String getMaskName(final int paper_no) {
 	return Sources.MASK_NAME + "_" + String.valueOf(paper_no) + Sources.MASK_SUFFIX;

@@ -60,9 +60,9 @@ public class StartScreen extends Activity {
     public void onToggleClicked(View view) {
 	GameState.play_sound = ((ToggleButton) view).isChecked();
 	if (GameState.play_sound)
-	    ((ToggleButton) view).setText("SOUND IS ON");
+	    ((ToggleButton) view).setText(R.string.sound_toggle_on);
 	else 
-	    ((ToggleButton) view).setText("SOUND IS OFF");
+	    ((ToggleButton) view).setText(R.string.sound_toggle_off);
 	edit.putBoolean(PLAY_SOUND, GameState.play_sound);
 	edit.apply();
     }
