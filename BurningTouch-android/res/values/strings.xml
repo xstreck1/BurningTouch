@@ -5,8 +5,8 @@
     <string name="continue_button">PLAY</string>    
     <string name="exit_button">EXIT</string>
     <string name="story_button">STORY</string>
-    <string name="sound_toggle_off">SOUND OFF</string>
-    <string name="sound_toggle_on">SOUND ON</string>
+    <string name="sound_toggle_off">SOUND IS OFF</string>
+    <string name="sound_toggle_on"> SOUND IS ON </string>
     <string name="game_name">Burning Touch</string>
     <string name="jac_logo">Just A Concept Logotype</string>
     <string name="copyright">Just A Concept Game, CC BY-NC, 2013 </string>
