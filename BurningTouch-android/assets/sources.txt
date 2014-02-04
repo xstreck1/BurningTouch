@@ -1,1 +1,3 @@
-Fire: suonho, http://www.freesound.org/people/suonho/sounds/17725/
+ ELEMENTS_FIRE_01_Burning-Room: suonho, http://www.freesound.org/people/suonho/sounds/17725/
+Night of Chaos, Kevin MacLeod, http://incompetech.com/music/royalty-free/index.html?isrc=USUAN1300042
+Bell Rise 4, DJ Chronos, http://www.freesound.org/people/DJ%20Chronos/sounds/65977/
