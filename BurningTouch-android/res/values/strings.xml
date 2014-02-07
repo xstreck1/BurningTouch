@@ -6,11 +6,20 @@
     <string name="exit_button">EXIT</string>
     <string name="story_button">STORY</string>
     <string name="sound_toggle_off">SOUND IS OFF</string>
-    <string name="sound_toggle_on"> SOUND IS ON </string>
+    <string name="sound_toggle_on">SOUND IS\u00A0 ON</string>
     <string name="game_name">Burning Touch</string>
     <string name="jac_logo">Just A Concept Logotype</string>
     <string name="copyright">Just A Concept Game, CC BY-NC, 2013 </string>
-    <string name="description">Touch the screen to reveal the it\'s content. \n Too long a touch will burn the paper and change the course of things forever.</string>
+    <string name="description">
+        Heat the paper with a touch to reveal its hidden story. \n 
+        Be careful though - too long a touch will scorch the paper and the message within. \n
+        Only after you uncover the whole message you will be allowed to continue with the story. \n
+        \n 
+        Sounds: \n
+        Night of Chaos, Kevin MacLeod \n
+        Burning-Room: suonho \n
+        Bell Rise 4, DJ Chronos
+    </string>
     <string name="app_name">BurningTouch</string>
 
 </resources>

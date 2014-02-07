@@ -9,7 +9,7 @@
     <dimen name="button_padding">10dp</dimen>
     
     
-    <color name="button_bg">#AE000000</color>
+    <color name="button_bg">#A0000000</color>
     <color name="button_font">#BBBBBB</color>
     <color name="button_active">#FFFFFF</color>
     

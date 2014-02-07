@@ -25,20 +25,20 @@ public class DynamicPaper extends BasicPaper {
 
     // Heat pixel manipulation
     private float heat = 0f;
-    private final float HEAT_INCREASE = 2.25f;
+    private final float HEAT_INCREASE = 2.00f;
     private final float HEAT_DECREASE = 1.0f;
-    private final float MOVE_DECREASE = 1.3f;
-    private final float SHOW_THRESHOLD = 0.5f;
+    private final float MOVE_DECREASE = 1.0f;
+    private final float SHOW_THRESHOLD = 0.25f;
     private final float SHOW_STEP = 100f;
     private final float BURN_THRESHOLD = 1.0f;
     private final float BURN_STEP = 150f;
     private final float HEAT_MAX = 2.f;
 
     // Heat hint circle properties
-    private final float HEAT_R = 0.40f;
-    private final float HEAT_G = 0.08f;
-    private final float HEAT_B = 0.08f;
-    private final float HEAT_A = 0.35f;
+    private final float HEAT_R = 0.30f;
+    private final float HEAT_G = 0.05f;
+    private final float HEAT_B = 0.05f;
+    private final float HEAT_A = 0.30f;
     private final float HEAT_SIZE = 0.25f;
     private final int HEAT_LAYERS = 10;
 
