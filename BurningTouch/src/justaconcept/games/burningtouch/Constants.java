@@ -13,10 +13,10 @@ public class Constants {
     static final String BTN_OBJ_STR = "buttons_object";
     
     static int PAPER_COUNT = 11;
-    static float CLEAR_TRHS = 0.25f;
+    static float CLEAR_TRHS = 0.20f;
     static float BURN_TRHS = 0.45f;
     
-    static float BG_VOLUME = 0.4f;
-    static float BURN_VOLUME = 0.4f;
-    static float SUCC_VOLUME = 0.4f;
+    static float BG_VOLUME = 0.8f;
+    static float BURN_VOLUME = 0.7f;
+    static float SUCC_VOLUME = 0.7f;
 }

@@ -28,11 +28,12 @@ public class DynamicPaper extends BasicPaper {
     private final float HEAT_INCREASE = 2.00f;
     private final float HEAT_DECREASE = 1.0f;
     private final float MOVE_DECREASE = 1.0f;
-    private final float SHOW_THRESHOLD = 0.25f;
+    private final int   MAX_MOVE_DISTANCE = 500;
+    private final float SHOW_THRESHOLD = 0.5f;
     private final float SHOW_STEP = 100f;
-    private final float BURN_THRESHOLD = 1.0f;
-    private final float BURN_STEP = 150f;
-    private final float HEAT_MAX = 2.f;
+    private final float BURN_THRESHOLD = 1.5f;
+    private final float BURN_STEP = 100f;
+    private final float HEAT_MAX = 3.5f;
 
     // Heat hint circle properties
     private final float HEAT_R = 0.30f;
@@ -81,7 +82,7 @@ public class DynamicPaper extends BasicPaper {
     }
     
     int burnColorPart(int color_part) {
-	return Math.max(0, Math.round(color_part - Math.max(0, heat - BURN_THRESHOLD) * BURN_STEP * Gdx.graphics.getDeltaTime()));
+	return Math.max(0, Math.round(color_part - (heat > BURN_THRESHOLD ? BURN_STEP : 0) * Gdx.graphics.getDeltaTime()));
     }
 
     /**
@@ -100,7 +101,7 @@ public class DynamicPaper extends BasicPaper {
 	r = burnColorPart(r);
 	g = burnColorPart(g);
 	b = burnColorPart(b);
-	a = Math.min(255, Math.round(a + Math.max(0, heat - SHOW_THRESHOLD) * SHOW_STEP * Gdx.graphics.getDeltaTime()));
+	a = Math.min(255, Math.round(a + (heat > SHOW_THRESHOLD ? SHOW_STEP : 0) * Gdx.graphics.getDeltaTime()));
 	uncovered += a;
 
 	r <<= 24;
@@ -139,6 +140,8 @@ public class DynamicPaper extends BasicPaper {
 	heat = Math.min(heat + (Gdx.graphics.getDeltaTime() * HEAT_INCREASE), HEAT_MAX);
 	float distance = (float) Math.sqrt((last_x - mouse_x) * (last_x - mouse_x) + (last_y - mouse_y) * (last_y - mouse_y));
 	heat = Math.max(0f, heat - distance * MOVE_DECREASE * Gdx.graphics.getDeltaTime());
+	if (distance > MAX_MOVE_DISTANCE * Gdx.graphics.getDeltaTime())
+	    heat = 0;
 
 	// Update the pixels based on the last position and their diameter from
 	// there
@@ -209,7 +212,8 @@ public class DynamicPaper extends BasicPaper {
 	if (GameState.mouse_pressed) {
 	    renderer.setProjectionMatrix(cam.combined);
 	    renderer.begin(ShapeType.Filled);
-	    renderer.setColor(HEAT_R * heat, HEAT_G * heat, HEAT_B * heat, (float) HEAT_A * heat / HEAT_LAYERS);
+	    float factor = Math.max(0, heat - SHOW_THRESHOLD) + Math.max(0, heat - BURN_THRESHOLD);
+	    renderer.setColor(HEAT_R * factor, HEAT_G * factor, HEAT_B * factor, (float) HEAT_A * factor / HEAT_LAYERS);
 	    for (int i = 0; i < HEAT_LAYERS; i++)
 		renderer.circle(last_x, Constants.GAME_HEIGHT - last_y, (DIAMETER / 2f) * (1 + HEAT_SIZE * i));
 	    renderer.end();
