@@ -1,5 +1,5 @@
 <resources>
-    <string name="title_activity_start_screen">Hidden Story</string>
+    <string name="title_activity_start_screen">Burning Touch</string>
     
     <string name="start_button">NEW GAME</string>
     <string name="continue_button">PLAY</string>    
@@ -13,14 +13,14 @@
     <string name="jac_logo">Just A Concept Logotype</string>
     <string name="copyright">Just A Concept Game, CC BY-NC, 2013 </string>
     <string name="description">
-        Heat the paper with a touch to reveal its hidden story. \n 
-        Be careful though - too long a touch will scorch the paper and the message within. \n
-        Only after you uncover the whole message you will be allowed to continue with the story. \n
+        Heat the paper with a touch to reveal its hidden story.\n 
+        \u00A0 Be careful though - too long a touch will scorch the paper and the message within.\n
+        \u00A0 Only after you uncover the whole message you will be allowed to continue with the story.\n
         \n 
-        Sounds: \n
-        Night of Chaos, Kevin MacLeod \n
-        Burning-Room: suonho \n
-        Bell Rise 4, DJ Chronos
+        Sounds:\n
+        \u00A0 Night of Chaos, Kevin MacLeod\n
+        \u00A0 Burning-Room: suonho\n
+        \u00A0 Bell Rise 4, DJ Chronos
     </string>
     <string name="app_name">BurningTouch</string>
 

@@ -76,7 +76,8 @@ public class BurningTouch implements ApplicationListener {
 	    GameState.burn = Gdx.audio.newSound(Gdx.files.internal(Sources.BURN_SOUND));
 	if (GameState.background_music == null) {
 	    GameState.background_music = Gdx.audio.newMusic(Gdx.files.internal(Sources.BG_MUSIC));
-	    GameState.background_music.play();
+	    if (GameState.play_sound)
+		GameState.background_music.play();
 	}
     }
 
@@ -91,7 +92,7 @@ public class BurningTouch implements ApplicationListener {
 	    showError(Messages.getString("BurningTouch.1") + error.getMessage() + Messages.getString("BurningTouch.2")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	UpdateManager.loadWorkingMask();
+	UpdateManager.loadWorkingMask(false);
 
 	scene_objects = new HashMap<String, SceneObject>();
 	scene_objects.put(Constants.BG_OBJ_STR, new BackgroundGraphic());
@@ -159,6 +160,7 @@ public class BurningTouch implements ApplicationListener {
 	stage.dispose();
 	buttonFont.dispose();
 	skin.dispose();
+	buttonFont.dispose();
 
 	GameState.burn.dispose();
 	GameState.burn = null;

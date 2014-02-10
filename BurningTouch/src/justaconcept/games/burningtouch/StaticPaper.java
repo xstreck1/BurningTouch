@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 public class StaticPaper extends BasicPaper {  
     StaticPaper(int paper_no) {
 	super();
-	current_mask_ = new Texture(Gdx.files.internal(Sources.getMaskName(paper_no)));
+	filler_ = new Texture(Gdx.files.internal(Sources.getMaskName(paper_no)));
     }
 
     @Override
@@ -16,5 +16,10 @@ public class StaticPaper extends BasicPaper {
 
     @Override
     public void touch(int mouse_x, int mouse_y) {	
+    }
+    
+    @Override
+    public void dispose() {
+	super.dispose();
     }
 }

@@ -11,10 +11,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 
 public class DynamicPaper extends BasicPaper {
-    Pixmap current_mask_pix_;
-    ShapeRenderer renderer;
+    Pixmap current_mask_pix_ = null;
+    ShapeRenderer renderer = null;
     Texture burned_paper = null;
     Texture finished_paper = null;
+    Texture current_mask_ = null;
 
     // Heat space coverage
     final int DIAMETER = 60;
@@ -30,16 +31,16 @@ public class DynamicPaper extends BasicPaper {
     private final int   MAX_MOVE_DISTANCE = 500;
     private final float SHOW_THRESHOLD = 0.5f;
     private final float SHOW_STEP = 100f;
-    private final float BURN_THRESHOLD = 1.15f;
+    private final float BURN_THRESHOLD = 1.5f;
     private final float BURN_STEP = 100f;
-    private final float VIBRATE_TRHESHOLD = 2f;
-    private final float HEAT_MAX = 3.0f;
+    private final float VIBRATE_TRHESHOLD = 2.25f;
+    private final float HEAT_MAX = 3.5f;
 
     // Heat hint circle properties
-    private final float HEAT_R = 0.50f;
-    private final float HEAT_G = 0.10f;
-    private final float HEAT_B = 0.05f;
-    private final float HEAT_A = 0.50f;
+    private final float HEAT_R = 0.25f;
+    private final float HEAT_G = 0.05f;
+    private final float HEAT_B = 0.03f;
+    private final float HEAT_A = 0.25f;
     private final float HEAT_SIZE = 0.25f;
     private final int HEAT_LAYERS = 10;
 
@@ -68,6 +69,7 @@ public class DynamicPaper extends BasicPaper {
     DynamicPaper(Pixmap current_mask_pix_) {
 	super();
 	this.current_mask_pix_ = current_mask_pix_;
+	this.filler_ = new Texture(Gdx.files.internal(Sources.CLEAR_PAPER));
 	renderer = new ShapeRenderer();
 	resume();
     }
@@ -79,6 +81,7 @@ public class DynamicPaper extends BasicPaper {
 
     public void pause() {
 	this.current_mask_.dispose();
+	current_mask_ = null;
     }
     
     int burnColorPart(int color_part) {
@@ -184,6 +187,7 @@ public class DynamicPaper extends BasicPaper {
     @Override
     public void draw(SpriteBatch batch) {
 	super.draw(batch);
+	batch.draw(current_mask_, 0, 0);
 	// Overlay in the case of failure
 	if (GameState.paper_burning || GameState.paper_burned) {
 	    Color color = batch.getColor();
@@ -213,7 +217,7 @@ public class DynamicPaper extends BasicPaper {
 	    renderer.setProjectionMatrix(cam.combined);
 	    renderer.begin(ShapeType.Filled);
 	    float factor = (heat + Math.max(0, heat - SHOW_THRESHOLD) + Math.max(0, heat - BURN_THRESHOLD)) / 3f;
-	    renderer.setColor(HEAT_R * factor, HEAT_G * factor, HEAT_B * factor, (float) HEAT_A * factor / HEAT_LAYERS);
+	    renderer.setColor(HEAT_R * factor, HEAT_G * factor, HEAT_B * factor, (float) (HEAT_A * factor * 2.0f) / HEAT_LAYERS);
 	    for (int i = 0; i < HEAT_LAYERS; i++)
 		renderer.circle(last_x, Constants.GAME_HEIGHT - last_y, (DIAMETER / 2f) * (1 + HEAT_SIZE * i));
 	    renderer.end();
@@ -228,10 +232,13 @@ public class DynamicPaper extends BasicPaper {
     @Override
     public void dispose() {
 	super.dispose();
-	renderer.dispose();
-	if (burned_paper != null)
-	    burned_paper.dispose();
+	if (renderer != null)
+	    renderer.dispose();
 	if (finished_paper != null)
 	    finished_paper.dispose();
+	if (burned_paper != null)
+	    burned_paper.dispose();
+	if (current_mask_ != null)
+	    current_mask_.dispose();
     }
 }
