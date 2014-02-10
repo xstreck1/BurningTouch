@@ -27,7 +27,6 @@ public class BurningTouch implements ApplicationListener {
     private HashMap<String, SceneObject> scene_objects;
     private FPSLogger logger;
 
-    private AssetManager asset_manager = new AssetManager();
     private Stage stage;
     private Skin skin;
     private Table table;
@@ -75,8 +74,10 @@ public class BurningTouch implements ApplicationListener {
 	    GameState.succ = Gdx.audio.newSound(Gdx.files.internal(Sources.SUCC_SOUND));
 	if (GameState.burn == null)
 	    GameState.burn = Gdx.audio.newSound(Gdx.files.internal(Sources.BURN_SOUND));
-	if (GameState.background_music == null)
-	    asset_manager.load(Sources.BG_MUSIC, Music.class);
+	if (GameState.background_music == null) {
+	    GameState.background_music = Gdx.audio.newMusic(Gdx.files.internal(Sources.BG_MUSIC));
+	    GameState.background_music.play();
+	}
     }
 
     @Override
@@ -125,23 +126,23 @@ public class BurningTouch implements ApplicationListener {
 	logger.log();
 	stage.act(Gdx.graphics.getDeltaTime());
 	stage.draw();
-	if (GameState.background_music == null) {
-	    if (asset_manager.isLoaded(Sources.BG_MUSIC)) {
-                GameState.background_music = asset_manager.get(Sources.BG_MUSIC);
+	/*if (GameState.background_music == null) {
+	    if (GameState.asset_manager.isLoaded(Sources.BG_MUSIC)) {
+                GameState.background_music = GameState.asset_manager.get(Sources.BG_MUSIC);
                 GameState.background_music.play();
                 GameState.background_music.setLooping(true);
                 GameState.background_music.setVolume(Constants.BG_VOLUME);
 	    } else {
-		asset_manager.update();
+		GameState.asset_manager.update();
 	    }
-	}
+	}*/
     }
 
     @Override
     public void pause() {
 	if (GameState.current_paper == GameState.latest_paper && GameState.current_paper != Constants.PAPER_COUNT)
 	    ((DynamicPaper) scene_objects.get(Constants.PPR_OBJ_STR)).pause();
-	if (GameState.background_music != null)
+	if (GameState.play_sound && GameState.background_music != null)
 	    GameState.background_music.pause();
     }
 
@@ -158,13 +159,16 @@ public class BurningTouch implements ApplicationListener {
 	stage.dispose();
 	buttonFont.dispose();
 	skin.dispose();
-	asset_manager.unload(Sources.BG_MUSIC);
-	asset_manager.dispose();
+
 	GameState.burn.dispose();
 	GameState.burn = null;
 	GameState.succ.dispose();
 	GameState.succ = null;
+	GameState.background_music.dispose();
+	GameState.background_music = null;
+	
+
 	for (SceneObject scene_object : scene_objects.values()) 
-	    scene_object.update();
+	    scene_object.dispose();
     }
 }
