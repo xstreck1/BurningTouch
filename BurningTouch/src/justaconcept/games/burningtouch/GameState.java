@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 
 public class GameState {
     static public boolean play_sound = true;
+    static public boolean vibrate = true;
 
     static public int current_paper = 1; // Numerical id of the currently used
 					 // paper
