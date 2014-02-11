@@ -32,6 +32,7 @@ public class DynamicPaper extends BasicPaper {
     private final float SHOW_THRESHOLD = 0.5f;
     private final float SHOW_STEP = 100f;
     private final float BURN_THRESHOLD = 1.2f;
+    private final float VIBRATE_TRHESHOLD = 1.9f;
     private final float BURN_STEP = 100f;
     private final float HEAT_MAX = 3.0f;
 
@@ -50,11 +51,11 @@ public class DynamicPaper extends BasicPaper {
     // State change
     private int uncovered = 0;
     private int burned = 0;
+    private final int UNCOVER_GROWTH = 128;
     // How many alpha points are required.
-    private final int UNCOVER_REQ = Math.round(Constants.GAME_HEIGHT * Constants.GAME_WIDTH * 2.5f * Constants.CLEAR_TRHS * 100f);
+    private final int UNCOVER_REQ = Math.round(Constants.GAME_HEIGHT * Constants.GAME_WIDTH * Constants.CLEAR_TRHS * 100f);
     // How much of the burn is required
     private final int BURN_REQ = Math.round((DIAMETER - JITTER) * (DIAMETER - JITTER) * .75f * Constants.BURN_TRHS);
-    private final float VIBRATE_TRHESHOLD = 0.75f;
     // The lowest r+g+b where the pixel is not yet burned
     private final int BURNED_COLOR = 10;
     
@@ -102,13 +103,13 @@ public class DynamicPaper extends BasicPaper {
 	int g = (pixel & 0x00FF0000) >>> 16;
 	int b = (pixel & 0x0000FF00) >>> 8;
 	int a = pixel & 0x000000FF;
-	uncovered -= a;
+	int old_a = a;
 
 	r = burnColorPart(r);
 	g = burnColorPart(g);
 	b = burnColorPart(b);
 	a = Math.min(255, Math.round(a + (heat > SHOW_THRESHOLD ? SHOW_STEP : 0) * Gdx.graphics.getDeltaTime()));
-	uncovered += a;
+	uncovered += (old_a < UNCOVER_GROWTH) ? a - old_a : 0;
 
 	int sum = r + g + b ;
 	burned += (sum < BURNED_COLOR) ? 1 : 0;
@@ -129,11 +130,9 @@ public class DynamicPaper extends BasicPaper {
 	    finished_paper = new Texture(Gdx.files.internal(Sources.getMaskName(GameState.current_paper)));
 	    if (GameState.play_sound)
 		GameState.succ.play(Constants.SUCC_VOLUME);
-	} else if (GameState.vibrate && (burned >= BURN_REQ * VIBRATE_TRHESHOLD) && (burned < BURN_REQ)) {
-	    Gdx.input.vibrate(Math.min(100,(int) (Gdx.graphics.getDeltaTime() * 1000 * 3f)));	    
 	} else if (burned >= BURN_REQ) {
 	    if (GameState.vibrate)
-		Gdx.input.vibrate((int) (1000));	 
+		Gdx.input.vibrate((int) (1900));	 
 	    uncovered = 0;
 	    System.out.print("burned");
 	    GameState.failed_clear_play = true;
@@ -230,6 +229,9 @@ public class DynamicPaper extends BasicPaper {
 	    for (int i = 0; i < HEAT_LAYERS; i++)
 		renderer.circle(last_x, Constants.GAME_HEIGHT - last_y, (DIAMETER / 2f) * (1 + HEAT_SIZE * i));
 	    renderer.end();
+	    if (GameState.vibrate && (heat > VIBRATE_TRHESHOLD)) {
+		Gdx.input.vibrate(Math.min(50, (int) (Gdx.graphics.getDeltaTime() * 1000 * 1.5f)));	    
+	    } 
 	}
     }
 

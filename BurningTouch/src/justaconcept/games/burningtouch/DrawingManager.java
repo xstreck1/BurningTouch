@@ -41,7 +41,7 @@ public class DrawingManager extends ObjectManager {
 	batch.setProjectionMatrix(cam.combined);
 	
 	scene_objects_.get(Constants.PPR_OBJ_STR).draw(batch);
-	if (!GameState.paper_burning && ! GameState.paper_clearing)
+	if (!GameState.paper_burning && !GameState.paper_clearing)
 	    scene_objects_.get(Constants.BTN_OBJ_STR).draw(batch);
 	batch.end();
 	
