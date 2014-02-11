@@ -31,10 +31,9 @@ public class DynamicPaper extends BasicPaper {
     private final int   MAX_MOVE_DISTANCE = 500;
     private final float SHOW_THRESHOLD = 0.5f;
     private final float SHOW_STEP = 100f;
-    private final float BURN_THRESHOLD = 1.5f;
+    private final float BURN_THRESHOLD = 1.2f;
     private final float BURN_STEP = 100f;
-    private final float VIBRATE_TRHESHOLD = 2.25f;
-    private final float HEAT_MAX = 3.5f;
+    private final float HEAT_MAX = 3.0f;
 
     // Heat hint circle properties
     private final float HEAT_R = 0.25f;
@@ -55,7 +54,10 @@ public class DynamicPaper extends BasicPaper {
     private final int UNCOVER_REQ = Math.round(Constants.GAME_HEIGHT * Constants.GAME_WIDTH * 2.5f * Constants.CLEAR_TRHS * 100f);
     // How much of the burn is required
     private final int BURN_REQ = Math.round((DIAMETER - JITTER) * (DIAMETER - JITTER) * .75f * Constants.BURN_TRHS);
-
+    private final float VIBRATE_TRHESHOLD = 0.75f;
+    // The lowest r+g+b where the pixel is not yet burned
+    private final int BURNED_COLOR = 10;
+    
     // Afterburn
     private int burning_radius = DIAMETER / 2 - JITTER;
     private int max_radius = Constants.GAME_WIDTH;
@@ -92,6 +94,7 @@ public class DynamicPaper extends BasicPaper {
      * Increase the value of the color pixels and alpha based on the heat.
      */
     private int morphPixel(int pixel) {
+	// Skip blacks
 	if ((pixel & 0xFFFFFF00) == 0xFFFFFF00)
 	    return pixel;
 
@@ -107,12 +110,14 @@ public class DynamicPaper extends BasicPaper {
 	a = Math.min(255, Math.round(a + (heat > SHOW_THRESHOLD ? SHOW_STEP : 0) * Gdx.graphics.getDeltaTime()));
 	uncovered += a;
 
+	int sum = r + g + b ;
+	burned += (sum < BURNED_COLOR) ? 1 : 0;
+	
 	r <<= 24;
 	g <<= 16;
 	b <<= 8;
 
 	int result = r | g | b | a;
-	burned += ((0xFFFFFFFF & result) == 0xFF) ? 1 : 0;
 	return result;
     }
 
@@ -124,7 +129,11 @@ public class DynamicPaper extends BasicPaper {
 	    finished_paper = new Texture(Gdx.files.internal(Sources.getMaskName(GameState.current_paper)));
 	    if (GameState.play_sound)
 		GameState.succ.play(Constants.SUCC_VOLUME);
+	} else if (GameState.vibrate && (burned >= BURN_REQ * VIBRATE_TRHESHOLD) && (burned < BURN_REQ)) {
+	    Gdx.input.vibrate(Math.min(100,(int) (Gdx.graphics.getDeltaTime() * 1000 * 3f)));	    
 	} else if (burned >= BURN_REQ) {
+	    if (GameState.vibrate)
+		Gdx.input.vibrate((int) (1000));	 
 	    uncovered = 0;
 	    System.out.print("burned");
 	    GameState.failed_clear_play = true;
@@ -134,7 +143,7 @@ public class DynamicPaper extends BasicPaper {
 	    if (GameState.play_sound)
 		GameState.burn.play(Constants.BURN_VOLUME);
 	    
-	}
+	} 
     }
 
     @Override
@@ -222,11 +231,6 @@ public class DynamicPaper extends BasicPaper {
 		renderer.circle(last_x, Constants.GAME_HEIGHT - last_y, (DIAMETER / 2f) * (1 + HEAT_SIZE * i));
 	    renderer.end();
 	}
-    }
-    
-    public void vibrate() {
-	if (GameState.vibrate && heat > VIBRATE_TRHESHOLD)
-	    Gdx.input.vibrate((int) (Gdx.graphics.getDeltaTime() * 1000 * 1.5f));
     }
 
     @Override

@@ -17,7 +17,7 @@ public class StartScreen extends Activity {
     private final String LATEST_PAPER_SAVE = "latest_paper";
     private final String FAILED_PAPER_SAVE = "failed_paper";
     private final String PLAY_SOUND = "play_sound";
-    private final String VIBRATE = "play_sound";
+    private final String VIBRATE = "vibrate";
     
     void loadState() {
 	GameState.current_paper = prefs.getInt(CURRENT_PAPER_SAVE, 1);
@@ -75,7 +75,7 @@ public class StartScreen extends Activity {
 	    ((ToggleButton) view).setText(R.string.vibrate_toggle_on);
 	else 
 	    ((ToggleButton) view).setText(R.string.vibrate_toggle_off);
-	edit.putBoolean(VIBRATE, GameState.play_sound);
+	edit.putBoolean(VIBRATE, GameState.vibrate);
 	edit.apply();
     }
     
@@ -92,7 +92,7 @@ public class StartScreen extends Activity {
 	edit.putInt(LATEST_PAPER_SAVE, GameState.latest_paper);
 	edit.putBoolean(FAILED_PAPER_SAVE, GameState.failed_clear_play);
 	edit.putBoolean(PLAY_SOUND, GameState.play_sound);
-	edit.putBoolean(VIBRATE, GameState.play_sound);
+	edit.putBoolean(VIBRATE, GameState.vibrate);
 	edit.apply();
     }
 }

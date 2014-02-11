@@ -76,8 +76,10 @@ public class BurningTouch implements ApplicationListener {
 	    GameState.burn = Gdx.audio.newSound(Gdx.files.internal(Sources.BURN_SOUND));
 	if (GameState.background_music == null) {
 	    GameState.background_music = Gdx.audio.newMusic(Gdx.files.internal(Sources.BG_MUSIC));
-	    if (GameState.play_sound)
+	    if (GameState.play_sound) {
 		GameState.background_music.play();
+		GameState.background_music.setLooping(true);
+	    }
 	}
     }
 
@@ -169,6 +171,10 @@ public class BurningTouch implements ApplicationListener {
 	GameState.background_music.dispose();
 	GameState.background_music = null;
 	
+	if (GameState.paper_burned || GameState.paper_burning) {
+	    GameState.working_mask.dispose();
+	    GameState.working_mask = null;
+	}
 
 	for (SceneObject scene_object : scene_objects.values()) 
 	    scene_object.dispose();

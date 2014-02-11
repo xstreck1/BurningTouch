@@ -47,7 +47,6 @@ public class DrawingManager extends ObjectManager {
 	
 	Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
 	((BasicPaper) scene_objects_.get(Constants.PPR_OBJ_STR)).drawHeat(cam);
-	((BasicPaper) scene_objects_.get(Constants.PPR_OBJ_STR)).vibrate();
 	
 	resetCamera();
     }
