@@ -174,6 +174,7 @@ public class BurningTouch implements ApplicationListener {
 	if (GameState.paper_burned || GameState.paper_burning) {
 	    GameState.working_mask.dispose();
 	    GameState.working_mask = null;
+	    GameState.cleared = 0;
 	}
 
 	for (SceneObject scene_object : scene_objects.values()) 

@@ -49,7 +49,6 @@ public class DynamicPaper extends BasicPaper {
     private int last_y = 0;
 
     // State change
-    private int uncovered = 0;
     private int burned = 0;
     private final int UNCOVER_GROWTH = 128;
     // How many alpha points are required.
@@ -109,7 +108,7 @@ public class DynamicPaper extends BasicPaper {
 	g = burnColorPart(g);
 	b = burnColorPart(b);
 	a = Math.min(255, Math.round(a + (heat > SHOW_THRESHOLD ? SHOW_STEP : 0) * Gdx.graphics.getDeltaTime()));
-	uncovered += (old_a < UNCOVER_GROWTH) ? a - old_a : 0;
+	GameState.cleared += (old_a < UNCOVER_GROWTH) ? a - old_a : 0;
 
 	int sum = r + g + b ;
 	burned += (sum < BURNED_COLOR) ? 1 : 0;
@@ -123,7 +122,7 @@ public class DynamicPaper extends BasicPaper {
     }
 
     private void controlState() {
-	if (uncovered >= UNCOVER_REQ) {
+	if (GameState.cleared >= UNCOVER_REQ) {
 	    System.out.print("solved");
 	    GameState.paper_clearing = true;
 	    clearing = CLEAR_TIME;
@@ -133,7 +132,7 @@ public class DynamicPaper extends BasicPaper {
 	} else if (burned >= BURN_REQ) {
 	    if (GameState.vibrate)
 		Gdx.input.vibrate((int) (1900));	 
-	    uncovered = 0;
+	    GameState.cleared = 0;
 	    System.out.print("burned");
 	    GameState.failed_clear_play = true;
 	    GameState.paper_burning = true;

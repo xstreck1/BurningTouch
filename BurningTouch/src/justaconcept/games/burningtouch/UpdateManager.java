@@ -11,6 +11,7 @@ public class UpdateManager extends ObjectManager {
 	if (replace) {
 	    GameState.working_mask.dispose();
 	    GameState.working_mask = null;
+	    GameState.cleared = 0;
 	}
 	
 	if (GameState.working_mask == null) {

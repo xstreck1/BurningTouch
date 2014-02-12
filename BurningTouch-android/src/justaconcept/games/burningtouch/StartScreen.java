@@ -95,4 +95,13 @@ public class StartScreen extends Activity {
 	edit.putBoolean(VIBRATE, GameState.vibrate);
 	edit.apply();
     }
+    
+    @Override
+    protected void onDestroy() {
+	super.onDestroy();
+	if (GameState.working_mask != null) {
+	    GameState.working_mask.dispose();
+	    GameState.working_mask = null;
+	}
+    }
 }

@@ -18,6 +18,7 @@ public class GameState {
 
     static public Pixmap working_mask = null; // The text currently being
 					      // elucidated
+    static public int cleared = 0;
     static public Sound burn = null;
     static public Sound succ = null;
     static public Music background_music = null;
