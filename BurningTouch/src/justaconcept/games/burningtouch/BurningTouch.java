@@ -99,7 +99,7 @@ public class BurningTouch implements ApplicationListener {
 	scene_objects = new HashMap<String, SceneObject>();
 	scene_objects.put(Constants.BG_OBJ_STR, new BackgroundGraphic());
 	BasicPaper current_paper;
-	if (GameState.current_paper == GameState.latest_paper)
+	if (GameState.current_paper == GameState.latest_paper && GameState.current_paper != Constants.PAPER_COUNT)
 	    current_paper = new DynamicPaper(GameState.working_mask);
 	else
 	    current_paper = new StaticPaper(GameState.current_paper);

@@ -51,10 +51,10 @@ public class BackgroundGraphic implements SceneObject {
      * Position and rotate the corners
      */
     void makeCorners(SpriteBatch batch) {
-	batch.draw(bl_corner_piece_, -l_corner_X, l_corner_Y);
-	batch.draw(tl_corner_piece_, -l_corner_X, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y);
-	batch.draw(tr_corner_piece_, Gdx.graphics.getWidth() - Constants.PIECE_SIZE + l_corner_X, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y);
-	batch.draw(br_corner_piece_, Gdx.graphics.getWidth() - Constants.PIECE_SIZE + l_corner_X, l_corner_Y);
+	batch.draw(bl_corner_piece_, l_corner_X, l_corner_Y);
+	batch.draw(tl_corner_piece_, l_corner_X, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y);
+	batch.draw(tr_corner_piece_, Gdx.graphics.getWidth() - Constants.PIECE_SIZE - l_corner_X, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y);
+	batch.draw(br_corner_piece_, Gdx.graphics.getWidth() - Constants.PIECE_SIZE - l_corner_X, l_corner_Y);
     }
 
     /**
@@ -62,12 +62,12 @@ public class BackgroundGraphic implements SceneObject {
      */
     void makeBorders(SpriteBatch batch) {
 	for (int X = 1; X < (rep_X - 1); X++) {
-	    batch.draw(b_border_piece_, -l_corner_X + X * Constants.PIECE_SIZE, l_corner_Y);
-	    batch.draw(t_border_piece_, -l_corner_X + X * Constants.PIECE_SIZE, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y);
+	    batch.draw(b_border_piece_, l_corner_X + X * Constants.PIECE_SIZE, l_corner_Y);
+	    batch.draw(t_border_piece_, l_corner_X + X * Constants.PIECE_SIZE, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y);
 	}
 	for (int Y = 1; Y < (rep_Y - 1); Y++) {
-	    batch.draw(l_border_piece_, -l_corner_X, l_corner_Y  + Y * Constants.PIECE_SIZE);
-	    batch.draw(r_border_piece_, l_corner_X + Gdx.graphics.getWidth() - Constants.PIECE_SIZE, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y  - Y * Constants.PIECE_SIZE);
+	    batch.draw(l_border_piece_, l_corner_X, l_corner_Y  + Y * Constants.PIECE_SIZE);
+	    batch.draw(r_border_piece_, -l_corner_X + Gdx.graphics.getWidth() - Constants.PIECE_SIZE, Gdx.graphics.getHeight() - Constants.PIECE_SIZE - l_corner_Y  - Y * Constants.PIECE_SIZE);
 	}
     }
 
