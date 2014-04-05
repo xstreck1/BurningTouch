@@ -18,8 +18,8 @@ public class Main {
 	    // load a properties file
 	    prop.load(new FileInputStream("config.properties"));
 	    // get the property value
-	    cfg.width = Integer.parseInt(prop.getProperty("app_width"));
-	    cfg.height = Integer.parseInt(prop.getProperty("app_height"));
+	    cfg.width = Math.round(Integer.parseInt(prop.getProperty("app_width")) / 0.75f);
+	    cfg.height = Math.round(Integer.parseInt(prop.getProperty("app_height")) / 0.75f);;
 	    Constants.PAPER_COUNT = Integer.parseInt(prop.getProperty("paper_count"));
 	    GameState.current_paper = Integer.parseInt(prop.getProperty("current_paper"));
 	    GameState.latest_paper = Integer.parseInt(prop.getProperty("latest_paper"));

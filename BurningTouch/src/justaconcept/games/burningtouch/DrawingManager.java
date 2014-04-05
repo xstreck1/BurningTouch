@@ -16,12 +16,15 @@ public class DrawingManager extends ObjectManager {
     DrawingManager(HashMap<String, SceneObject> scene_objects_) {
 	super(scene_objects_);
 	batch = new SpriteBatch();
-	cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+	cam = new OrthographicCamera();
+	cam.setToOrtho(false, LayoutManager.getWidth(), LayoutManager.getHeight());
+	cam.update(); 
 	resetCamera();
     }
     
     public void resetCamera() {
-	cam.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
+
+	cam.position.set(LayoutManager.getWidth() / 2, LayoutManager.getHeight() / 2, 0);
 	cam.update();
 	batch.setProjectionMatrix(cam.combined);
     }

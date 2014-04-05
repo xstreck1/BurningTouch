@@ -4,10 +4,9 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
@@ -64,7 +63,7 @@ public class BurningTouch implements ApplicationListener {
 		Gdx.app.exit();
 	    }
 	});
-	table.add(button1).size(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+	table.add(button1).size(LayoutManager.getWidth(), LayoutManager.getHeight());
 
 	pixmap.dispose();
     }
@@ -78,6 +77,7 @@ public class BurningTouch implements ApplicationListener {
 	    GameState.background_music = Gdx.audio.newMusic(Gdx.files.internal(Sources.BG_MUSIC));
 	    if (GameState.play_sound) {
 		GameState.background_music.play();
+		GameState.background_music.setVolume(Constants.BG_VOLUME);
 		GameState.background_music.setLooping(true);
 	    }
 	}
