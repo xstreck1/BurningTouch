@@ -13,7 +13,7 @@ public class TouchManager extends ObjectManager {
     void update()  {
 	
 	if (Gdx.input.isTouched() && (!GameState.paper_burning) && (!GameState.paper_clearing)) {
-	    System.out.println("MouseX: " + Gdx.input.getX() + ", MouseY: " + Gdx.input.getY());
+	    // System.out.println("MouseX: " + Gdx.input.getX() + ", MouseY: " + Gdx.input.getY());
 	    
 	    GameState.mouse_x = Math.round(Gdx.input.getX() * Gdx.graphics.getDensity()) - LayoutManager.getGame_X();
 	    GameState.mouse_y = Math.round(Gdx.input.getY() * Gdx.graphics.getDensity()) - LayoutManager.getGame_Y();

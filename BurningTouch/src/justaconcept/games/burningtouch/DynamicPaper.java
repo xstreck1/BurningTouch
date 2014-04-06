@@ -29,18 +29,16 @@ public class DynamicPaper extends BasicPaper {
     private final float HEAT_DECREASE = 1.0f;
     private final float MOVE_DECREASE = 0.75f;
     private final int   MAX_MOVE_DISTANCE = 500;
-    private final float SHOW_THRESHOLD = 0.5f;
-    private final float SHOW_STEP = 100f;
-    private final float BURN_THRESHOLD = 1.2f;
-    private final float VIBRATE_TRHESHOLD = 1.9f;
+    private final float SHOW_STEP = 250f;
+    private final float VIBRATE_TRHESHOLD = 0.90f;
     private final float BURN_STEP = 100f;
-    private final float HEAT_MAX = 3.0f;
+    private final float HEAT_MAX = 2.0f;
 
     // Heat hint circle properties
-    private final float HEAT_R = 0.25f;
-    private final float HEAT_G = 0.05f;
-    private final float HEAT_B = 0.03f;
-    private final float HEAT_A = 0.25f;
+    private final float HEAT_R = 1.0f;
+    private final float HEAT_G = 0.18f;
+    private final float HEAT_B = 0.13f;
+    private final float HEAT_A = 0.50f;
     private final float HEAT_SIZE = 0.25f;
     private final int HEAT_LAYERS = 10;
 
@@ -49,12 +47,12 @@ public class DynamicPaper extends BasicPaper {
     private int last_y = 0;
 
     // State change
-    private int burned = 0;
+    private float burned = 0;
     private final int UNCOVER_GROWTH = 128;
     // How many alpha points are required.
     private final int UNCOVER_REQ = Math.round(Constants.GAME_HEIGHT * Constants.GAME_WIDTH * Constants.CLEAR_TRHS * 100f);
     // How much of the burn is required
-    private final int BURN_REQ = Math.round((DIAMETER - JITTER) * (DIAMETER - JITTER) * .75f * Constants.BURN_TRHS);
+    private final float BURN_REQ = DIAMETER * DIAMETER * Constants.BURN_TRHS;
     // The lowest r+g+b where the pixel is not yet burned
     private final int BURNED_COLOR = 10;
     
@@ -67,7 +65,7 @@ public class DynamicPaper extends BasicPaper {
     private float burning = 0;
     private final float CLEAR_TIME = 5f;
     private float clearing = 0;
-
+    
     DynamicPaper(Pixmap current_mask_pix_) {
 	super();
 	this.current_mask_pix_ = current_mask_pix_;
@@ -86,14 +84,14 @@ public class DynamicPaper extends BasicPaper {
 	current_mask_ = null;
     }
     
-    int burnColorPart(int color_part) {
-	return Math.max(0, Math.round(color_part - (heat > BURN_THRESHOLD ? BURN_STEP : 0) * Gdx.graphics.getDeltaTime()));
+    int burnColorPart(int color_part, float burn_factor) {
+	return Math.round(Math.max(0, color_part - burn_factor));
     }
 
     /**
      * Increase the value of the color pixels and alpha based on the heat.
      */
-    private int morphPixel(int pixel) {
+    private int morphPixel(int pixel, float burn_factor, float show_factor) {
 	// Skip blacks
 	if ((pixel & 0xFFFFFF00) == 0xFFFFFF00)
 	    return pixel;
@@ -104,14 +102,14 @@ public class DynamicPaper extends BasicPaper {
 	int a = pixel & 0x000000FF;
 	int old_a = a;
 
-	r = burnColorPart(r);
-	g = burnColorPart(g);
-	b = burnColorPart(b);
-	a = Math.min(255, Math.round(a + (heat > SHOW_THRESHOLD ? SHOW_STEP : 0) * Gdx.graphics.getDeltaTime()));
+	r = burnColorPart(r, burn_factor);
+	g = burnColorPart(g, burn_factor);
+	b = burnColorPart(b, burn_factor);
+	a = Math.round(Math.min(255, a + show_factor));
 	GameState.cleared += (old_a < UNCOVER_GROWTH) ? a - old_a : 0;
 
-	int sum = r + g + b ;
-	burned += (sum < BURNED_COLOR) ? 1 : 0;
+	float sum = r + g + b + (255f - a);
+	burned += (1024f - sum) / 1024f;
 	
 	r <<= 24;
 	g <<= 16;
@@ -121,7 +119,7 @@ public class DynamicPaper extends BasicPaper {
 	return result;
     }
 
-    private void controlState() {
+    private void controlState() {	
 	if (GameState.cleared >= UNCOVER_REQ) {
 	    System.out.print("solved");
 	    GameState.paper_clearing = true;
@@ -129,7 +127,13 @@ public class DynamicPaper extends BasicPaper {
 	    finished_paper = new Texture(Gdx.files.internal(Sources.getMaskName(GameState.current_paper)));
 	    if (GameState.play_sound)
 		GameState.succ.play(Constants.SUCC_VOLUME);
-	} else if (burned >= BURN_REQ) {
+	}
+	System.out.print(burned + "");
+	if (burned >= ((float) BURN_REQ * VIBRATE_TRHESHOLD)) {
+	    if (GameState.vibrate)
+		Gdx.input.vibrate((int) (1200 * Gdx.graphics.getDeltaTime()));	
+	}
+	if (burned >= BURN_REQ) {
 	    if (GameState.vibrate)
 		Gdx.input.vibrate((int) (1900));	 
 	    GameState.cleared = 0;
@@ -152,7 +156,18 @@ public class DynamicPaper extends BasicPaper {
 	heat = Math.max(0f, heat - distance * MOVE_DECREASE * Gdx.graphics.getDeltaTime());
 	if (distance > MAX_MOVE_DISTANCE * Gdx.graphics.getDeltaTime())
 	    heat = 0;
-
+	
+	// Precompute burn
+	float logistic_range = heat * (12f / HEAT_MAX) - 6f; // Values for the range of logistic curve
+	float logistic_heat = (float) (1 / (1 + Math.pow(Math.E, -logistic_range)));
+	float burn_factor = logistic_heat * BURN_STEP  * Gdx.graphics.getDeltaTime();
+	
+	// Precompute show 
+	float logarithmic_range = (float) (((Math.E / 2) * heat / HEAT_MAX) + (Math.E / 2));
+	float logarithmic_heat = (float) Math.log(logarithmic_range);
+	System.out.print(logarithmic_heat + " ");
+	float show_factor = logarithmic_heat * SHOW_STEP  * Gdx.graphics.getDeltaTime();
+	
 	// Update the pixels based on the last position and their diameter from
 	// there
 	burned = 0;
@@ -162,7 +177,7 @@ public class DynamicPaper extends BasicPaper {
 		double prob = ((DIAMETER / 2) - Math.sqrt((last_x - x) * (last_x - x) + (last_y - y) * (last_y - y))) / JITTER;
 		// On the borders draw only some
 		if (prob > 1f || prob > MathUtils.random()) {
-		    int pixel = morphPixel(current_mask_pix_.getPixel(x, y));
+		    int pixel = morphPixel(current_mask_pix_.getPixel(x, y), burn_factor, show_factor);
 		    current_mask_pix_.drawPixel(x, y, pixel);
 		}
 	    }
@@ -223,14 +238,11 @@ public class DynamicPaper extends BasicPaper {
 	if (GameState.mouse_pressed) {
 	    renderer.setProjectionMatrix(cam.combined);
 	    renderer.begin(ShapeType.Filled);
-	    float factor = (heat + Math.max(0, heat - SHOW_THRESHOLD) + Math.max(0, heat - BURN_THRESHOLD)) / 3f;
-	    renderer.setColor(HEAT_R * factor, HEAT_G * factor, HEAT_B * factor, (float) (HEAT_A * factor * 2.0f) / HEAT_LAYERS);
+	    float factor = (heat + 0.5f);
+	    renderer.setColor(HEAT_R, HEAT_G, HEAT_B, (float) (HEAT_A * factor) / HEAT_LAYERS);
 	    for (int i = 0; i < HEAT_LAYERS; i++)
 		renderer.circle(last_x, Constants.GAME_HEIGHT - last_y, (DIAMETER / 2f) * (1 + HEAT_SIZE * i));
 	    renderer.end();
-	    if (GameState.vibrate && (heat > VIBRATE_TRHESHOLD)) {
-		Gdx.input.vibrate(Math.min(50, (int) (Gdx.graphics.getDeltaTime() * 1000 * 1.5f)));	    
-	    } 
 	}
     }
 

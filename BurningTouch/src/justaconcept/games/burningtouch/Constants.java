@@ -14,7 +14,7 @@ public class Constants {
     
     static int PAPER_COUNT = 11;
     static float CLEAR_TRHS = 0.525f;
-    static float BURN_TRHS = 0.4f;
+    static float BURN_TRHS = 0.525f;
     
     static float BG_VOLUME = 0.8f;
     static float BURN_VOLUME = 0.7f;
